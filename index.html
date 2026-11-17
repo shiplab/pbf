@@ -109,7 +109,7 @@ select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid 
 .legend i.sq{height:10px;width:10px;border:0;margin-right:6px;vertical-align:baseline}
 .chart{position:relative;margin-top:4px}
 .chart svg{display:block;width:100%;height:auto;overflow:visible}
-.chart text{font:11.5px var(--f-mono);fill:var(--ink2)}
+.chart text{font:12.5px var(--f-mono);fill:var(--ink2)}
 .chart .ax{stroke:var(--muted);stroke-width:1}
 .chart .gr{stroke:var(--grid);stroke-width:1}
 .chart .ref{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3}
@@ -154,838 +154,660 @@ ul.hyp .basis{font-size:13px;color:var(--muted)}
 <div class="wrap">
   <div class="tb">
     <div>
-      <div class="kicker">Companion to the paper · project-based firms delivering complex products and systems</div>
-      <h1>The cost of uniqueness: a cost model for unique complex projects in project-based firms</h1>
-      <p class="lede" style="margin-top:12px">Project-based firms (PBFs) that deliver complex products and systems (CoPS) mostly build one-of-a-kind or small-batch products, but the quantitative evidence on learning comes from series of ships. This page builds a cost model for a unique project from that shipbuilding evidence (Erichsen 1994, Craggs 2004, Coleman 2007, CBO 2018), and adds an element of external knowledge gain from tools and processes such as a digital thread (Plate 6). Move the controls and every plate recalculates. Transfer between different designs and the response to tool investment are assumptions, not findings.</p>
+      <div class="kicker">Companion to the paper · shipbuilding learning evidence applied to project-based firms</div>
+      <h1>Measuring the cost of uniqueness</h1>
+      <p class="lede" style="margin-top:12px">A project-based firm that repeats a design gets cheaper at it; a firm whose next project is new to it pays for the novelty. This page follows the paper step by step. It starts from Erichsen's learning effect for ship series, adds a floor at the core cost and a novelty penalty, and then one factor at a time: similar projects, time without related work, an unrelated project, people leaving, reuse and digital tools, and customer changes. Move a control and every plate recalculates. The learning rate, the novelty penalty and the two rates of loss come from shipbuilding and manufacturing data; the similarity between different designs, the size of the fade and the effect of a tool are assumptions.</p>
       <div class="badges" aria-label="Status labels used on this page">
-        <span class="b src">Sourced</span><span class="b ada">Adapted</span><span class="b ill">Illustrative</span><span class="b spec">Speculation</span>
+        <span class="b src">Sourced</span><span class="b ada">Adapted</span><span class="b ill">Assumed</span><span class="b spec">Scenario</span>
       </div>
     </div>
     <dl>
-      <dt>Basis</dt><dd>Erichsen 1994</dd>
-      <dt>Extended by</dt><dd>Craggs 2004, Coleman 2007, CBO 2018</dd>
-      <dt>Tool example</dt><dd>SEUS project</dd>
-      <dt>Caution from</dt><dd>Thompson 2001, Gies 2022</dd>
-      <dt>Units</dt><dd>set in scenario</dd>
+      <dt>Learning effect</dt><dd>Erichsen 1994</dd>
+      <dt>Novelty penalty</dt><dd>Craggs et al. 2004</dd>
+      <dt>Losses</dt><dd>Argote et al. 1990, Benkard 2000</dd>
+      <dt>Customer changes</dt><dd>Coleman et al. 2007</dd>
+      <dt>Example</dt><dd>core cost 100,000 labour hours</dd>
     </dl>
   </div>
 
   <div class="layout">
     <aside class="controls" id="controls" aria-label="Scenario">
       <h2>Scenario</h2>
-      <p class="hint">One firm bidding one unique project. Every plate recalculates when you move a control.</p>
-
-      <fieldset><legend>How learning applies</legend>
-        <div class="f"><label for="lam">Share of core work learnable again, λ</label><output id="o-lam"></output>
-          <input type="range" id="lam" data-k="lam" min="0" max="100" step="5" value="0">
-          <div class="chips" data-for="lam">
-            <button class="chip" data-v="0">0: Form A, premium only</button>
-            <button class="chip" data-v="100">100: Form B, whole cost to floor</button>
-          </div></div>
-        <p class="hint" id="form-hint" style="margin-top:6px"></p>
-        <div class="f" style="margin-top:8px"><label for="forget">Forgetting</label>
-          <select id="forget" data-k="forget" style="grid-column:1/-1">
-            <option value="linear">Linear, m per month beyond g₀ (base)</option>
-            <option value="none">None (Thompson 2007)</option>
-            <option value="g96">Geometric, 96% kept per month (Benkard 2000)</option>
-            <option value="g75">Geometric, 75% kept per month (Argote et al. 1990)</option>
-          </select></div>
-      </fieldset>
+      <p class="hint">One firm pricing one project. The base values are those of the paper.</p>
 
       <fieldset><legend>Project</legend>
         <div class="f"><label for="unit">Cost unit</label><input type="text" id="unit" data-k="unit" value="labour hours" autocomplete="off"></div>
-        <div class="f"><label for="base">Core baseline</label><output id="o-base"></output>
-          <input type="number" id="base" data-k="base" min="1" step="1000" value="100000"></div>
-        <div class="f"><label for="f">Novelty penalty</label><output id="o-f"></output>
-          <input type="range" id="f" data-k="f" min="0" max="50" step="0.5" value="10">
+        <div class="f"><label for="B">Core cost B</label><output id="o-B"></output>
+          <input type="number" id="B" data-k="B" min="1" step="1000" value="100000"></div>
+        <div class="f"><label for="f">Novelty penalty f</label><output id="o-f"></output>
+          <input type="range" id="f" data-k="f" min="0" max="30" step="0.5" value="10">
           <div class="chips" data-for="f">
-            <button class="chip" data-v="2.5">2.5% similar type</button>
+            <button class="chip" data-v="2.5">2.5% similar class</button>
             <button class="chip" data-v="10">10% new type</button>
-            <button class="chip" data-v="40">40% warship yard</button>
           </div></div>
-        <div class="f"><label for="c">Change orders</label><output id="o-c"></output>
-          <input type="range" id="c" data-k="c" min="0" max="20" step="0.1" value="12.3">
-          <div class="chips" data-for="c">
-            <button class="chip" data-v="12.3">12.3% first ship</button>
-            <button class="chip" data-v="8.62">8.62% major mod.</button>
-            <button class="chip" data-v="2.97">2.97% follow-on</button>
+        <div class="f"><label for="S">Learning rate S, per doubling</label><output id="o-S"></output>
+          <input type="range" id="S" data-k="S" min="0" max="20" step="0.1" value="5.7">
+          <div class="chips" data-for="S">
+            <button class="chip" data-v="3">3%</button>
+            <button class="chip" data-v="5.7">5.7% Erichsen</button>
+            <button class="chip" data-v="10">10%</button>
           </div></div>
-        <label class="ck" style="margin-top:6px"><input type="checkbox" id="cvar" data-k="cvar"> Change orders fall with experience: from the value above at the full premium to 3% at the floor (Coleman et al. 2007)</label>
+        <div class="f"><label for="lam">Strength of the learning effect λ</label><output id="o-lam"></output>
+          <input type="range" id="lam" data-k="lam" min="0" max="100" step="5" value="100">
+          <div class="chips" data-for="lam">
+            <button class="chip" data-v="100">1: full effect</button>
+            <button class="chip" data-v="0">0: weak case</button>
+          </div></div>
       </fieldset>
 
-      <fieldset><legend>Firm experience</legend>
-        <div class="f"><label for="Sorg">Learning per doubling</label><output id="o-Sorg"></output>
-          <input type="range" id="Sorg" data-k="Sorg" min="0" max="25" step="0.5" value="6.5">
-          <div class="chips" data-for="Sorg">
-            <button class="chip" data-v="5">5% CBO Virginia</button>
-            <button class="chip" data-v="6.5">6.5% Couch avg.</button>
-            <button class="chip" data-v="15">15% new tech.</button>
-            <button class="chip" data-v="18">18% new yard/type</button>
-          </div></div>
-        <div class="f"><label for="nPrev">Comparable past projects</label><output id="o-nPrev"></output>
-          <input type="range" id="nPrev" data-k="nPrev" min="0" max="30" step="1" value="6"></div>
-        <div class="f"><label for="r">Relatedness to this project</label><output id="o-r"></output>
-          <input type="range" id="r" data-k="r" min="0" max="100" step="5" value="60"></div>
+      <fieldset><legend>Experience</legend>
+        <div class="f"><label for="N">Similar projects completed</label><output id="o-N"></output>
+          <input type="range" id="N" data-k="N" min="0" max="10" step="1" value="2"></div>
+        <div class="f"><label for="rho">Similarity ρ to this project</label><output id="o-rho"></output>
+          <input type="range" id="rho" data-k="rho" min="0" max="100" step="5" value="60"></div>
       </fieldset>
 
-      <fieldset><legend>Gap since last project</legend>
-        <div class="f"><label for="gap">Months since last comparable</label><output id="o-gap"></output>
-          <input type="range" id="gap" data-k="gap" min="0" max="48" step="1" value="14"></div>
-        <div class="f"><label for="g0">Gap with no loss</label><output id="o-g0"></output>
+      <fieldset><legend>Losses since then</legend>
+        <div class="f"><label for="g">Months without related work g</label><output id="o-g"></output>
+          <input type="range" id="g" data-k="g" min="0" max="48" step="1" value="0"></div>
+        <div class="f"><label for="g0">Months with no loss g₀</label><output id="o-g0"></output>
           <input type="range" id="g0" data-k="g0" min="0" max="24" step="1" value="6"></div>
-        <div class="f"><label for="m">Experience lost per month beyond</label><output id="o-m"></output>
-          <input type="range" id="m" data-k="m" min="0" max="0.5" step="0.01" value="0.05"></div>
+        <div class="f"><label for="m">Fade per month beyond, m</label><output id="o-m"></output>
+          <input type="range" id="m" data-k="m" min="0" max="0.3" step="0.01" value="0.05"></div>
+        <div class="f"><label for="tau">Unrelated project, months τ</label><output id="o-tau"></output>
+          <input type="range" id="tau" data-k="tau" min="0" max="24" step="1" value="0"></div>
+        <div class="f"><label for="d">Experience kept per month, d</label><output id="o-d"></output>
+          <input type="range" id="d" data-k="d" min="50" max="100" step="1" value="75">
+          <div class="chips" data-for="d">
+            <button class="chip" data-v="75">0.75 Argote et al.</button>
+            <button class="chip" data-v="96">0.96 Benkard</button>
+          </div></div>
+        <div class="f"><label for="q">Share of experience leaving, q</label><output id="o-q"></output>
+          <input type="range" id="q" data-k="q" min="0" max="100" step="1" value="0">
+          <div class="chips" data-for="q">
+            <button class="chip" data-v="20">a fifth</button>
+            <button class="chip" data-v="33">a third</button>
+            <button class="chip" data-v="50">half</button>
+          </div></div>
       </fieldset>
 
-      <fieldset><legend>Scenario band</legend>
-        <div class="f"><label for="spread">Learning rate ± points</label><output id="o-spread"></output>
-          <input type="range" id="spread" data-k="spread" min="0" max="10" step="0.5" value="4"></div>
+      <fieldset><legend>Reuse and digital tool</legend>
+        <div class="f"><label for="phi">Share of the design reused, φ</label><output id="o-phi"></output>
+          <input type="range" id="phi" data-k="phi" min="0" max="100" step="5" value="0"></div>
+        <div class="f"><label for="t">Months the tool has been in use, t</label><output id="o-t"></output>
+          <input type="range" id="t" data-k="t" min="0" max="36" step="1" value="0"></div>
+        <div class="f"><label for="emax">Experience the tool gives, e_max</label><output id="o-emax"></output>
+          <input type="range" id="emax" data-k="emax" min="0" max="3" step="0.1" value="1"></div>
+        <div class="f"><label for="T">Months until fully in use, T</label><output id="o-T"></output>
+          <input type="range" id="T" data-k="T" min="1" max="48" step="1" value="24"></div>
+        <label class="ck" style="margin-top:8px"><input type="checkbox" id="ai" data-k="ai"> AI assistant uses the tool: fully in use after 6 months, and half of each loss is retained (a scenario, not evidence)</label>
+      </fieldset>
+
+      <fieldset><legend>Customer changes</legend>
+        <div class="f"><label for="c1">On a first project, c₁</label><output id="o-c1"></output>
+          <input type="range" id="c1" data-k="c1" min="0" max="20" step="0.1" value="12.3"></div>
+        <div class="f"><label for="cr">On a repeat, c_r</label><output id="o-cr"></output>
+          <input type="range" id="cr" data-k="cr" min="0" max="20" step="0.1" value="3"></div>
       </fieldset>
     </aside>
 
     <main>
-      <section class="plate" aria-labelledby="h-model">
-        <header><span class="tag">Plate 0</span><h2 id="h-model">The model</h2></header>
-        <p class="lede">Recurring cost of the next project is a core baseline, plus a novelty premium that organizational experience wears down, plus change orders. The firm forgets experience when the gap since its last comparable project gets long. How the learning curve applies to a design the firm has not built before is a modeling choice. In Form A only the premium is learnable, the cautious reading of Craggs's finding that ship-specific learning does not transfer. In Form B the whole cost of the new design follows the curve down to the floor, which matches Craggs's series data (floor by about the 4th vessel). The two bound the answer; λ, the share of core work that a new design makes learnable again, moves between them at the top of the controls. Forgetting can be switched between the linear base and the published geometric rates.</p>
-        <div class="formula">C  =  B · (1 + c)  +  U          U  =  B · u(n) · (1 + c)      [cost of uniqueness]
-u(n)  =  max[ 0 ,  (λ + f) · (1 + n)^b  −  λ ]          P(n) = 1 + u(n)
-λ = 0:  Form A, only the premium is learnable      λ = 1:  Form B, whole cost to the floor
-n  =  max( 0 ,  r · N  −  m · max( 0 , g − g₀ ) )   [ + e(x) in Plate 6 ]
-b  =  ln(1 − S) / ln 2</div>
-        <div class="tablewrap"><table>
-          <thead><tr><th>Symbol</th><th>Meaning</th><th>Status</th></tr></thead>
-          <tbody>
-          <tr><td class="sym">B</td><td>Cost of a repeat of a known type at the yard's core productivity. A series cannot get cheaper than this.</td><td><span class="b ada">Adapted</span> Craggs</td></tr>
-          <tr><td class="sym">f</td><td>First-of-class penalty above core productivity for a design that is new to the firm.</td><td><span class="b src">Sourced</span> Craggs</td></tr>
-          <tr><td class="sym">S, b</td><td>Learning per doubling of experience, and the exponent Erichsen derives from it.</td><td><span class="b src">Sourced</span> Erichsen, CBO</td></tr>
-          <tr><td class="sym">N, r</td><td>Comparable past projects, and the share of that experience that transfers to this project.</td><td><span class="b ill">Illustrative</span> my construction</td></tr>
-          <tr><td class="sym">g, g₀, m</td><td>Months since last project, months before forgetting starts, and experience lost per month after that. Linear form from Coleman; the values are not published.</td><td><span class="b ada">Adapted</span> shape sourced, values illustrative</td></tr>
-          <tr><td class="sym">x, e<sub>max</sub>, x<sub>s</sub>, φ</td><td>Investment in tools and processes (share of core cost), the external knowledge they could add, the investment scale at which most of it is reached, and the share of the novelty penalty they remove by reuse (Plate 6).</td><td><span class="b ill">Illustrative</span> no data exist</td></tr>
-          <tr><td class="sym">c</td><td>Change orders as a share of base cost.</td><td><span class="b src">Sourced</span> Coleman</td></tr>
-          </tbody></table></div>
-        <p class="note">No paper tests this equation as a whole. Each piece comes from a different paper and a different kind of shipbuilding. Treat the page as a worked example of the logic, not as a calibrated estimator.</p>
-      </section>
-
       <section class="plate" aria-labelledby="h-est">
-        <header><span class="tag">Plate 1</span><h2 id="h-est">Estimate for this project</h2></header>
-        <div class="hero" id="hero"></div>
-        <div class="tablewrap"><table class="bu" id="bu"></table></div>
-        <p class="note" id="bu-note"></p>
+        <header><span class="tag">Estimate</span><h2 id="h-est">Cost of the project in this scenario</h2></header>
+        <div class="hero" id="est-hero"></div>
+        <div id="est-stack"></div>
+        <div class="legend" id="est-leg"></div>
+        <h3 style="margin-top:14px">How the experience available is reached</h3>
+        <div class="tablewrap"><table id="est-tab"></table></div>
+        <p class="note" id="est-note"></p>
+        <h3 style="margin-top:10px">Situations from the paper</h3>
+        <div class="chips" id="presets" style="margin-top:6px">
+          <button class="chip" data-p='{"N":0}'>Design new to the firm</button>
+          <button class="chip" data-p='{"N":2}'>After two similar projects</button>
+          <button class="chip" data-p='{"N":5}'>After five</button>
+          <button class="chip" data-p='{"N":5,"g":36}'>…then 36 months without related work</button>
+          <button class="chip" data-p='{"N":5,"tau":12}'>…then a 12-month unrelated project</button>
+          <button class="chip" data-p='{"N":5,"q":50}'>…then half of the experience leaves</button>
+          <button class="chip" data-p='{"N":0,"phi":50}'>New, earlier design reused</button>
+          <button class="chip" data-p='{"N":0,"t":24}'>New, tool fully in use</button>
+          <button class="chip" data-p='{"N":0,"lam":0}'>New, weak case</button>
+        </div>
       </section>
 
-      <section class="plate" aria-labelledby="h-two">
-        <header><span class="tag">Plate 2</span><h2 id="h-two">Same project, two firms</h2></header>
-        <p class="lede">Both firms bid the same design. The first firm uses the scenario on the left. The second has less related experience and a different gap.</p>
+      <section class="plate" aria-labelledby="h-21">
+        <header><span class="tag">Step 2.1</span><h2 id="h-21">Erichsen's learning effect</h2><span class="b src">Sourced</span></header>
+        <p class="lede">In a series of identical ships each further unit takes fewer hours. Erichsen (1994) fitted 131 ships in 32 series from 8 Norwegian yards and found that the hours fall by 5.7% each time the unit number doubles. The gain is largest on the second unit and shrinks after it.</p>
+        <div class="formula">yₙ = a · nᵇ        b = log₂(1 − S)</div>
+        <div class="legend" id="l-21"></div><div class="chart" id="c-21"></div>
+        <p class="note" id="n-21"></p>
+      </section>
+
+      <section class="plate" aria-labelledby="h-22">
+        <header><span class="tag">Step 2.2</span><h2 id="h-22">A floor and a novelty penalty</h2><span class="b ada">Adapted</span></header>
+        <p class="lede">The curve of Step 2.1 falls without end. Craggs et al. (2004) report that a first vessel of a new type costs about 10% more than later ones, 2 to 3% for a class similar to an earlier one, and that the core cost is reached by about the fourth vessel. The model therefore puts a floor at the core cost B and starts a new design at B(1 + f).</p>
+        <div class="formula">h(E) = B · (1 + u(E))        u(E) = max[0, (λ + f)(1 + E)ᵇ − λ]</div>
+        <div class="legend" id="l-22"></div><div class="chart" id="c-22"></div>
+        <p class="note" id="n-22"></p>
+      </section>
+
+      <section class="plate" aria-labelledby="h-23">
+        <header><span class="tag">Step 2.3</span><h2 id="h-23">Experience from similar projects</h2><span class="b ada">Adapted</span></header>
+        <p class="lede">A project-based firm rarely builds the same design twice. Each completed project adds its similarity ρ to the experience stock E: 1 for an identical project, less for a similar one, 0 for an unrelated one. The shape is a step up at each completion.</p>
+        <div class="formula">E ← E + ρ        at the completion of each project</div>
         <div class="two">
-          <div class="f"><label for="nB">Firm B comparable past projects</label><output id="o-nB"></output>
-            <input type="range" id="nB" data-k="nB" min="0" max="30" step="1" value="0"></div>
-          <div class="f"><label for="gapB">Firm B months since last comparable</label><output id="o-gapB"></output>
-            <input type="range" id="gapB" data-k="gapB" min="0" max="48" step="1" value="0"></div>
+          <div><div class="legend" id="l-23a"></div><div class="chart" id="c-23a"></div></div>
+          <div><div class="legend" id="l-23b"></div><div class="chart" id="c-23b"></div></div>
         </div>
-        <div id="firms"></div>
-        <h3 style="margin:18px 0 6px;font-size:15px">Two approaches for Firm B</h3>
-        <p class="note">Firm B cannot buy a track record, but it can act on the terms it controls. Tick what it does; the table recalculates under the current λ and at both ends.</p>
-        <div class="two" style="margin-bottom:8px">
-          <label class="ck"><input type="checkbox" id="ap-reuse" checked> Reuse an earlier design: novelty penalty halved</label>
-          <label class="ck"><input type="checkbox" id="ap-freeze" checked> Freeze the specification: change orders at the "major modification" level, 8.6%</label>
-          <label class="ck"><input type="checkbox" id="ap-tools"> Invest in knowledge tools at the Plate 6 setting</label>
-        </div>
-        <div class="tablewrap"><table id="appr"></table></div>
-        <p class="note" id="appr-note"></p>
+        <p class="note" id="n-23"></p>
       </section>
 
-      <section class="plate" aria-labelledby="h-hist">
-        <header><span class="tag">Plate 2b</span><h2 id="h-hist">Your project history: judged or measured</h2><span class="b ill">Illustrative</span></header>
-        <p class="lede">Real histories are not N equal projects at even intervals. Enter the firm's past projects in order: each one's relatedness to the new design, as judged by the estimators and as measured from the share of design blocks the new design reuses, and the months since the previous project started. The experience stock follows the recursion of Plate 0 with the scenario's forgetting; the bid uses the scenario's novelty, change orders, learning rate and λ.</p>
-        <div class="tablewrap"><table id="hist-t">
-          <thead><tr><th>Project</th><th>Relatedness, judged</th><th>Relatedness, measured</th><th>Gap since previous (months)</th><th></th></tr></thead>
-          <tbody id="hist-rows"></tbody></table></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px">
-          <button class="chip" id="hist-add">+ add project</button>
-          <button class="chip" id="hist-reset">reset to the paper's detailed case</button>
-          <label class="ck" style="margin-left:auto">gap before the bid (months) <input type="number" id="hist-gap" value="14" min="0" max="120" style="width:64px;margin-left:6px"></label>
-          <label class="ck">judgement error ± <input type="number" id="hist-err" value="30" min="0" max="80" style="width:56px;margin-left:6px">%</label>
-        </div>
-        <div class="chart" id="ch-hist"></div>
-        <div class="hero" id="hero-hist"></div>
-        <div class="tablewrap"><table id="hist-out"></table></div>
-        <h3 style="margin-top:18px">The next year: a related project, an unrelated one, or none</h3>
-        <p class="note">Stock left for the next related bid and that bid's uniqueness cost, at the judged and the measured stock. The unrelated project (ρ = 0.2) runs twelve months at the interruption rate of Plate 4b; the gap uses the scenario's forgetting rule. Columns give Form A / Form B.</p>
-        <div class="tablewrap"><table id="hist-dec"></table></div>
-        <p class="note" id="hist-note"></p>
-      </section>
-
-      <section class="plate" aria-labelledby="h-ser">
-        <header><span class="tag">Plate 3</span><h2 id="h-ser">A series versus a run of unique projects</h2></header>
-        <p class="lede">Both lines start from this firm's first-project cost. The series repeats one design, so it learns on that design and in the organization. The unique run only gains what transfers between different designs.</p>
+      <section class="plate" aria-labelledby="h-24">
+        <header><span class="tag">Steps 2.4 to 2.6</span><h2 id="h-24">Three losses: fade, fall and drop</h2><span class="b src">Shapes sourced</span><span class="b ill">Sizes assumed</span></header>
+        <p class="lede">Experience is lost in three ways, each with its own shape. Time without related work fades the stock slowly after a few months (2.4). An unrelated project makes it fall fast, because the same people work on something else (2.5). People or partners leaving take a share of it at once (2.6); in a firm of small specialised departments, one person leaving each department is a small share, a whole department a large one. The example starts after five similar projects.</p>
+        <div class="formula">2.4  E ← max(0, E − m · max(0, g − g₀))     2.5  E ← E · dᵗ     2.6  E ← E · (1 − q)</div>
         <div class="two">
-          <div class="f"><label for="Sser">Series learning per doubling</label><output id="o-Sser"></output>
-            <input type="range" id="Sser" data-k="Sser" min="0" max="25" step="0.5" value="10"></div>
-          <div class="f"><label for="N">Projects shown</label><output id="o-N"></output>
-            <input type="range" id="N" data-k="N" min="4" max="25" step="1" value="12"></div>
+          <div><div class="legend" id="l-24a"></div><div class="chart" id="c-24a"></div></div>
+          <div><div class="legend" id="l-24b"></div><div class="chart" id="c-24b"></div></div>
         </div>
-        <div class="seg" role="radiogroup" aria-label="Erichsen reading of the curve">
-          <label><input type="radio" name="interp" value="unit" checked><span>Curve is unit cost</span></label>
-          <label><input type="radio" name="interp" value="avg"><span>Curve is average cost</span></label>
-        </div>
-        <div class="chart" id="ch-ser"></div>
-        <p class="note">Cost is shown as a percentage of the core baseline, before change orders. In Form A Erichsen's curve is applied to the premium above core; in Form B to the whole cost until it reaches core productivity. Either way the series does not fall through the floor that Craggs describe. The unique run assumes the scenario's gap between each pair of projects.</p>
+        <p class="note" id="n-24"></p>
+      </section>
 
-        <h3 style="margin-top:20px">Erichsen's series model</h3>
-        <div class="formula" id="eri"></div>
-        <p class="note">Erichsen reads the curve both ways. The Norwegian fits he reports are b = −0.0846 (r² = 0.33) for unit hours per ton and b = −0.0630 (r² = 0.63) for the average of the first n units. The average reading fits better.</p>
+      <section class="plate" aria-labelledby="h-27">
+        <header><span class="tag">Step 2.7</span><h2 id="h-27">Reuse and digital tools</h2><span class="b ill">Assumed</span></header>
+        <p class="lede">Two things help a firm that has not built the design before. Starting from an earlier design removes part of the novelty, once, on this project. A digital tool that holds earlier projects gives access to experience the people do not have; it is taken up gradually, so it is modelled as a ramp.</p>
+        <div class="formula">f ← (1 − φ) · f        E_available = E + e_max · min(1, t / T)</div>
+        <div class="two">
+          <div><div class="legend" id="l-27a"></div><div class="chart" id="c-27a"></div></div>
+          <div><div class="legend" id="l-27b"></div><div class="chart" id="c-27b"></div></div>
+        </div>
+        <p class="note" id="n-27"></p>
+      </section>
+
+      <section class="plate" aria-labelledby="h-28">
+        <header><span class="tag">Step 2.8</span><h2 id="h-28">Customer changes, and the visible and hidden cost</h2><span class="b src">Ends sourced</span><span class="b ill">Line assumed</span></header>
+        <p class="lede">Customer changes add 12.3% on a first project and 3.0% on a repeat (Coleman et al., 2007); between the two they fall with the novelty penalty. The visible cost of uniqueness is what a project costs above a repeat. The hidden cost is what the following projects cost more because the experience was lost.</p>
+        <div class="formula">C = B · (1 + u) · (1 + c(u))        c(u) = c_r + (c₁ − c_r) · min(1, u / f)</div>
+        <div class="two">
+          <div><div class="legend" id="l-28a"></div><div class="chart" id="c-28a"></div></div>
+          <div><div class="legend" id="l-28b"></div><div class="chart" id="c-28b"></div></div>
+        </div>
+        <div class="hero" id="h28-hero" style="margin-top:12px"></div>
+        <p class="note" id="n-28"></p>
+      </section>
+
+      <section class="plate" aria-labelledby="h-29">
+        <header><span class="tag">Step 2.9</span><h2 id="h-29">Strength of the learning effect</h2><span class="b">Open</span></header>
+        <p class="lede">Whether experience from similar projects lowers the whole cost of a new design, as in a ship series, is not settled by the data. At λ = 1, the base case, it does. At λ = 0, the weak case, experience reduces only the novelty penalty and the cost falls slowly. Results are reported at full strength with the weak case beside them.</p>
+        <div class="legend" id="l-29"></div><div class="chart" id="c-29"></div>
+        <p class="note" id="n-29"></p>
+      </section>
+
+      <section class="plate" aria-labelledby="h-fx">
+        <header><span class="tag">Section 3</span><h2 id="h-fx">Firm X: a mixed project history</h2><span class="b ill">Illustrative</span></header>
+        <p class="lede">Firm X delivered two platform supply vessels, two expedition cruise vessels and two wind service operation vessels, with 11 and 20 months without related work in between. It now bids a new wind service design. Fourteen months after the last delivery a department leaves. The similarity of each earlier project to the new design is first judged by the estimator, then measured from the firm's records.</p>
         <div class="calc">
-          <div class="f"><label for="m1">Add a ship to a series of</label><output id="o-m1"></output><input type="range" id="m1" data-k="m1" min="1" max="30" step="1" value="4"></div>
-          <div class="f"><label for="m2">compared with a series of</label><output id="o-m2"></output><input type="range" id="m2" data-k="m2" min="2" max="60" step="1" value="20"></div>
+          <div class="f"><label for="fxq">Share of experience that leaves with the department</label><output id="o-fxq"></output>
+            <input type="range" id="fxq" min="0" max="100" step="1" value="33"></div>
         </div>
-        <p id="marg" class="lede"></p>
+        <h3>3.2 The experience stock</h3>
+        <div class="legend" id="l-fx1"></div><div class="chart" id="c-fx1"></div>
+        <div class="two" style="margin-top:14px">
+          <div><h3>3.3 The bid</h3><div class="legend" id="l-fx2"></div><div class="chart" id="c-fx2"></div></div>
+          <div><h3>3.5 An unrelated project offered</h3><div class="legend" id="l-fx3"></div><div class="chart" id="c-fx3"></div></div>
+        </div>
+        <p class="note" id="n-fx"></p>
+        <h3 style="margin-top:14px">3.6 Narrowing the estimate with the firm's records</h3>
+        <div class="chart" id="c-fx4"></div>
+        <p class="note" id="n-fx4"></p>
       </section>
 
-      <section class="plate" aria-labelledby="h-gap">
-        <header><span class="tag">Plate 4</span><h2 id="h-gap">What a gap between projects costs</h2></header>
-        <p class="lede">Project cost against months since the firm's last comparable project, for three levels of experience. Coleman and colleagues found that lost learning rises linearly with the interval between ship starts, and that the curve restarts from an earlier point with the same slope.</p>
-        <div class="chart" id="ch-gap"></div>
-        <p class="note">Cost is a percentage of the core baseline, before change orders. The vertical marker is the scenario's gap.</p>
-      </section>
-
-      <section class="plate" aria-labelledby="h-int">
-        <header><span class="tag">Plate 4b</span><h2 id="h-int">Interrupting a series with an odd contract</h2></header>
-        <p class="lede">Erichsen (1994) observed that when a series of standard vessels was halted to build a non-standard ship, the hours of the next standard vessel rose almost to the level of the first, so that the cost of the interruption could be considerably higher than the cost of the odd contract itself. During the odd contract the yard is not idle: its people learn another ship, and the routines of the series are overwritten rather than left to fade. The stock is multiplied by d<sup>τ</sup> over the τ months of the unrelated contract (Equation 4 of the paper). The 75% a month of Argote and colleagues' Liberty-ship yards reproduces Erichsen; Benkard's 96% a month, an idle rate from a stable aircraft line, does not.</p>
+      <section class="plate" aria-labelledby="h-52">
+        <header><span class="tag">Section 5.2</span><h2 id="h-52">Digital tools and an AI assistant as sources of experience</h2><span class="b spec">Scenario</span></header>
+        <p class="lede">Firm Y has no related experience. It can start from the closest earlier design, freeze the specification, or bring a digital tool fully into use. An AI assistant that reads the firm's records could use the tool for the people: here it shortens the ramp to 6 months and retains half of what a loss would take. These two values are assumptions set to show the size of the effect, not measurements.</p>
         <div class="two">
-          <div class="f"><label for="kser">Ships in the series</label><output id="o-kser"></output>
-            <input type="range" id="kser" data-k="kser" min="3" max="12" step="1" value="6"></div>
-          <div class="f"><label for="kint">Odd contract taken after ship</label><output id="o-kint"></output>
-            <input type="range" id="kint" data-k="kint" min="1" max="11" step="1" value="4"></div>
-          <div class="f"><label for="dint">Duration of the odd contract (months)</label><output id="o-dint"></output>
-            <input type="range" id="dint" data-k="dint" min="0" max="36" step="1" value="12"></div>
-          <div class="f"><label for="dret">Retention per month while it is built</label><output id="o-dret"></output>
-            <input type="range" id="dret" data-k="dret" min="50" max="100" step="1" value="75"></div>
+          <div><h3>Firm Y, no related experience</h3><div class="chart" id="c-52a"></div></div>
+          <div><h3>The assistant, as a scenario</h3><div class="legend" id="l-52b"></div><div class="chart" id="c-52b"></div></div>
         </div>
-        <div class="chart" id="ch-int"></div>
-        <div class="hero" id="hero-int"></div>
-        <p class="note" id="int-note"></p>
-      </section>
-
-      <section class="plate" aria-labelledby="h-more">
-        <header><span class="tag">Plate 5</span><h2 id="h-more">More views of the effect</h2></header>
-        <p class="lede">Seven figures from the same scenario. A to D show the mechanism. E to G show where the effect is large and where it is small. Every figure follows the controls on the left.</p>
-
-        <div class="fig"><h3><span class="tag">A</span>The learning-curve family</h3>
-          <p class="why">Erichsen's basic effect. Each doubling of the number of units cuts unit cost by the learning rate S. Cost is an index with unit 1 at 100. The darker the line, the steeper the learning.</p>
-          <div class="chart" id="ch-fam"></div></div>
-
-        <div class="fig"><h3><span class="tag">B</span>Experience over a run of unique projects</h3>
-          <p class="why">Effective experience, in comparable projects, as the firm completes one project after another. Each project adds r projects' worth. Each gap removes some. When the loss per gap is larger than r, experience never builds.</p>
-          <div class="chart" id="ch-exp"></div></div>
-
-        <div class="fig"><h3><span class="tag">C</span>What that does to cost</h3>
-          <p class="why">The same three gap lengths, shown as cost per project against the core baseline, before change orders. The distance to the dashed line is the novelty premium still being paid.</p>
-          <div class="chart" id="ch-run"></div></div>
-
-        <div class="fig"><h3><span class="tag">D</span>Average cost of the first n projects</h3>
-          <p class="why">Erichsen's second reading of the curve, applied to a whole run. The dashed line is a firm with no relevant experience, which pays the full novelty premium on every project. The gap between it and the other two lines is what learning saves over the run.</p>
-          <div class="chart" id="ch-avg"></div>
-          <p id="avg-note" class="lede" style="margin-top:6px"></p></div>
-
-        <div class="fig"><h3><span class="tag">E</span>What related experience is worth</h3>
-          <p class="why">Cost of the next project against how closely the firm's past projects relate to it, with the scenario's gap applied. At 0% relatedness, past projects teach nothing and every line sits at the full novelty premium.</p>
-          <div class="chart" id="ch-rel"></div></div>
-
-        <div class="fig"><h3><span class="tag">F</span>Experience against gap, as a map</h3>
-          <p class="why">Novelty premium above core, for every combination of comparable past projects (up) and months since the last one (across). The outlined cell is the scenario. Dark cells are expensive. The colour scale runs from the cheapest to the dearest cell on the map.</p>
-          <div class="chart" id="ch-heat"></div></div>
-
-        <div class="fig"><h3><span class="tag">G</span>Which input moves the answer most</h3>
-          <p class="why">Change in expected cost when one input is swung to a low and a high value while the others stay at the scenario. Blue lowers cost, orange raises it.</p>
-          <div class="tor" id="tor"></div>
-          <p class="note">The swings are my choices, listed under each bar. A long bar means the answer is sensitive to that input, so it is worth measuring before it is trusted.</p></div>
-      </section>
-
-      <section class="plate" aria-labelledby="h-tool">
-        <header><span class="tag">Plate 6</span><h2 id="h-tool">Knowledge tools: how much is worth investing?</h2><span class="b ill">Illustrative</span></header>
-        <p class="lede">So far experience comes only from the firm's own past projects. A firm can also gain knowledge from outside that history by investing in tools and processes that capture, search and reuse what it knows: a project and design database, standard building blocks, change records, training. A digital thread, as developed in the SEUS shipbuilding project, is one such route. SEUS reports implementation at one yard, not cost effects, so the response below is assumed.</p>
-        <div class="formula">e(x)  =  e_max · ( 1 − exp(−x / x_s) )
-n  =  max( 0 , r · N − m · max( 0 , g − g₀ ) )  +  e(x)
-f_eff  =  f · [ 1 − φ · ( 1 − exp(−x / x_s) ) ]
-C  =  B · { [ 1 − δ · ( 1 − exp(−x / x_s) ) ] · P(n; f_eff) · (1 + c)  +  x }</div>
-        <fieldset style="margin-top:14px"><legend>Assumed response</legend>
-        <div class="f"><label for="x">Investment now</label><output id="o-x"></output>
-          <input type="range" id="x" data-k="x" min="0" max="4" step="0.05" value="0.5"></div>
-        <div class="f"><label for="emax">External knowledge at full effect</label><output id="o-emax"></output>
-          <input type="range" id="emax" data-k="emax" min="0" max="30" step="1" value="10"></div>
-        <div class="f"><label for="xs">Investment scale x<sub>s</sub></label><output id="o-xs"></output>
-          <input type="range" id="xs" data-k="xs" min="0.2" max="4" step="0.1" value="1"></div>
-        <div class="f"><label for="phi">Novelty removed by reuse</label><output id="o-phi"></output>
-          <input type="range" id="phi" data-k="phi" min="0" max="40" step="1" value="0"></div>
-        <div class="f"><label for="delta">Core work saved at full effect</label><output id="o-delta"></output>
-          <input type="range" id="delta" data-k="delta" min="0" max="10" step="0.5" value="0"></div>
-        </fieldset>
-        <div class="hero" id="hero-tool"></div>
-        <div class="chart" id="ch-tool"></div>
-        <p class="note">Net saving is the cost of the project with no tool investment minus its cost with investment x, including the investment itself. Investment is a per-project share of the core baseline; a tool that serves K projects corresponds to K times this at firm level. Learning and reuse can recover at most the premium; only the core channel (δ) can go below the floor. e<sub>max</sub> is in equivalents of comparable projects. In Form A the paper's 20,000 draws of e<sub>max</sub>, x<sub>s</sub>, φ and S gave a best investment with a median of 0.6% of core cost (5 to 95%: 0 to 0.9%). In Form B learning tools are worth nothing to a firm already at the floor and up to the whole premium to a firm with no related experience: try 0 past projects.</p>
+        <p class="note" id="n-52"></p>
       </section>
 
       <section class="plate" aria-labelledby="h-src">
-        <header><span class="tag">Plate 7</span><h2 id="h-src">Sources and how far to trust them</h2></header>
+        <header><span class="tag">Table 1</span><h2 id="h-src">Factors, shapes and sources</h2></header>
         <div class="tablewrap"><table>
-          <thead><tr><th>Input</th><th>Value on this page</th><th>Where it comes from</th></tr></thead>
+          <thead><tr><th>Factor</th><th>Shape</th><th>Inputs</th><th>Base values</th><th>Status and source</th></tr></thead>
           <tbody>
-          <tr><td>Learning per doubling, freighters</td><td class="mono">6.5% (range 4% to 9%)</td><td><span class="b src">Sourced</span> Couch, quoted in Erichsen 1994: average price falls to 93.5%, extremes 91% and 96%.</td></tr>
-          <tr><td>Learning, new yard or new type</td><td class="mono">18% (17% to 19%)</td><td><span class="b src">Sourced</span> Gustmann, in Erichsen: average cost falls to 81% to 83%.</td></tr>
-          <tr><td>Learning, new technology</td><td class="mono">15% (14% to 16%)</td><td><span class="b src">Sourced</span> Gustmann, in Erichsen: average cost falls to 84% to 86%.</td></tr>
-          <tr><td>Learning, well-known type</td><td class="mono">3% to 8%</td><td><span class="b src">Sourced</span> Gustmann, in Erichsen: 92% to 97%.</td></tr>
-          <tr><td>Learning, Virginia class submarines</td><td class="mono">5%</td><td><span class="b src">Sourced</span> CBO 2018, a 95% learning effect from 22 boats. CBO also removes one-off design cost before applying learning.</td></tr>
-          <tr><td>First-of-class penalty</td><td class="mono">2.5% / 10% / 40%</td><td><span class="b src">Sourced</span> Craggs 2004: 2% to 3% for a similar class at leading commercial yards, about 10% for a new vessel type, up to 40% at a warship yard with similar best-practice rating. The authors say there is not enough data to fit a scale.</td></tr>
-          <tr><td>Core productivity as a floor</td><td class="mono">100% of baseline</td><td><span class="b src">Sourced</span> Craggs 2004: no series can beat the yard's core productivity, normally reached by the fourth vessel.</td></tr>
-          <tr><td>Change orders</td><td class="mono">12.3% / 8.62% / 2.97%</td><td><span class="b src">Sourced</span> Coleman et al. 2007: first ship, major modifications, other follow ships. Their data are proprietary and the graphics are missing from the paper.</td></tr>
-          <tr><td>Loss of learning from gaps</td><td class="mono">linear</td><td><span class="b ada">Adapted</span> Coleman et al. 2007 found it linear in days between ship starts (DDG: p = 0.011, r² = 0.43; LHD: p = 0.017, r² = 0.89, from two groups of ships). The slope and crossover here are illustrative.</td></tr>
-          <tr><td>Relatedness r, transfer between unique projects</td><td class="mono">60%</td><td><span class="b ill">Illustrative</span> My construction, from Craggs's split between ship learning and transferable organizational learning.</td></tr>
-          <tr><td>Scenario band</td><td class="mono">learning ±4 points, penalty and change orders ±25%</td><td><span class="b ill">Illustrative</span> A range of scenarios. It is not a statistical interval.</td></tr>
+            <tr><td>Learning effect (2.1)</td><td>Curve</td><td class="sym">S, b</td><td>5.7%, −0.0846</td><td>Sourced for steel work: Erichsen (1994); adapted to the whole project</td></tr>
+            <tr><td>Core cost and novelty penalty (2.2)</td><td>Floor; once, on this project</td><td class="sym">B, f</td><td>100,000 h, 10%</td><td>Adapted and sourced: Craggs et al. (2004)</td></tr>
+            <tr><td>Similar projects completed (2.3)</td><td>Step up</td><td class="sym">ρ, E</td><td>0.6 in the example</td><td>Adapted: Benkard (2000)</td></tr>
+            <tr><td>Time without related work (2.4)</td><td>Slow fade</td><td class="sym">g, g₀, m</td><td>–, 6, 0.05</td><td>Shape sourced: Coleman et al. (2007); size assumed</td></tr>
+            <tr><td>An unrelated project in between (2.5)</td><td>Fast fall</td><td class="sym">τ, d</td><td>12, 0.75</td><td>Sourced: Argote et al. (1990); reproduces Erichsen (1994)</td></tr>
+            <tr><td>People and partners leaving (2.6)</td><td>Drop</td><td class="sym">q</td><td>0.2 to 0.5 in the example</td><td>Shape sourced: Erichsen, Coleman et al., Kellogg (2011); size assumed</td></tr>
+            <tr><td>Reuse and digital tools (2.7)</td><td>Once, on this project; ramp</td><td class="sym">φ; e_max, T</td><td>0.5; 1, 24</td><td>Assumed; range of φ from Craggs et al. (2004)</td></tr>
+            <tr><td>Customer changes (2.8)</td><td>Falls with the penalty</td><td class="sym">c₁, c_r</td><td>12.3%, 3.0%</td><td>Ends sourced: Coleman et al. (2007); line assumed</td></tr>
+            <tr><td>Strength of the learning effect (2.9)</td><td>–</td><td class="sym">λ</td><td>1 (weak case 0)</td><td>Open</td></tr>
           </tbody></table></div>
-        <h3 style="margin-top:18px">Two cautions</h3>
-        <p><b>A fitted learning rate may not be learning.</b> Thompson (2001) added capital investment to the classic Liberty ship regressions and the estimated learning effect roughly halved: a doubling of cumulative output raised monthly output by 41% without capital and about 22% with it. Capital and experience move together, so he warns his own split is hard to make reliably.</p>
-        <p><b>Classic curves may not describe low-rate work.</b> Gies (2022) tested five classic models (Wright, Crawford, DeJong, Stanford-B and the S-curve) on four naval ship classes and concluded that none characterises learning when ships are delivered years apart. He groups what helps or hurts learning as stability, procurement strategy, culture, knowledge management and workforce demographics. His work is qualitative, so it supplies no coefficients here.</p>
-        <p class="note">References: Erichsen, S. (1994) Journal of Ship Production 10(3), 141–145. Craggs, Bloor, Tanner and Bullen (2004) Journal of Ship Production 20(2), 107–113. Coleman et al. (2007) NPS-AM-07-036. CBO (2018) How CBO Estimates the Cost of New Ships. Thompson (2001) Journal of Political Economy 109(1), 103–137. Gies (2022) PhD dissertation, Old Dominion University.</p>
-      </section>
-
-      <section class="plate" aria-labelledby="h-spec">
-        <header><span class="tag">Plate 8</span><h2 id="h-spec">A project-based firm's point of view</h2><span class="b spec">Speculation</span></header>
-        <p class="lede">Everything above is arithmetic on published parameters. What follows is reasoning that goes past the papers. These are hypotheses to test, each with the paper it leans on and the data that would test it.</p>
-        <ul class="hyp">
-          <li><h3>Novelty is the normal cost, not the exception</h3>
-            <p>In a firm that rarely repeats, the first-of-class penalty is paid on most projects. A large share of its cost could be novelty premium instead of inefficiency. The question is how large, and whether the firm can see it in its own accounts.</p>
-            <div class="basis">Leans on Craggs 2004. Test with: cost per unit of work content across a firm's last 10 to 20 projects, tagged by how new each design was.</div></li>
-          <li><h3>Choosing projects for what they teach</h3>
-            <p>If experience transfers between related projects, a firm might accept a thinner margin on a job that builds capability for the next ones. The value depends on r, which nobody has measured.</p>
-            <div class="basis">Leans on Craggs's split of ship learning and organizational learning. Test with: whether cost on project k falls with the count of earlier projects sharing a system or a process.</div></li>
-          <li><h3>A poor-fit job can beat an idle gap</h3>
-            <p>If experience decays during a gap, taking an unrelated job to keep the workforce busy may cost less than waiting for the right one. The break-even depends on the forgetting rate, which here is only an assumption.</p>
-            <div class="basis">Leans on Coleman 2007. Test with: cost of the first project after gaps of different lengths, controlling for design change.</div></li>
-          <li><h3>Protecting knowledge between projects</h3>
-            <p>Gies's list of what helps learning suggests where a firm could spend effort in the gaps: stable teams, written lessons, retained core staff. Which of these matters most for one-off work is open.</p>
-            <div class="basis">Leans on Gies 2022. Test with: comparing firms with different staff turnover between projects.</div></li>
-          <li><h3>Pricing under attribution uncertainty</h3>
-            <p>If a firm cannot tell how much of its past improvement was learning and how much was investment or lower quality, it may over-credit learning in the next bid. Thompson's result suggests the credit could be about half what a naive fit implies.</p>
-            <div class="basis">Leans on Thompson 2001. Test with: refitting a firm's own history with capital spending and quality measures included.</div></li>
-          <li><h3>How learning transfers decides the answer</h3>
-            <p>If only the novelty premium is learnable (Form A), experience removes it slowly and novelty dominates cost. If the whole cost of a new design is learnable down to the floor (Form B), a few closely related projects remove it, as in series. Unique projects probably lie between, nearer B the more related they are.</p>
-            <div class="basis">Leans on Craggs 2004 (floor by about the 4th vessel; ship learning does not transfer). Test with: cost relative to core over runs of related but non-identical projects.</div></li>
-          <li><h3>Learning tools have a bounded payoff</h3>
-            <p>Tools that act through learning and reuse can recover at most the premium. For an experienced firm that is of the order of one percent of core cost per project or less; for a firm entering a type where it has few related projects it can be much more. Tools that make core work more productive are not bounded in this way.</p>
-            <div class="basis">Leans on the SEUS reports (implementation, not cost effects) and Plate 6. Test with: before-and-after comparison of hours in firms building a digital thread, against a baseline from enterprise-system hours.</div></li>
-          <li><h3>What would settle it</h3>
-            <p>A dataset of unique projects from one or more firms, with hours by work package, design novelty rating, dates, change orders and staffing. With that, f, r, m and g₀ could be estimated instead of assumed, and a digital thread that keeps these records could be the source. To calibrate in your own firm: record hours per size unit by work package, a novelty rating and the design lineage of each project, change orders as issues with hours, project dates and partners; take the floor from your best repeat work, the premium from first-of-type projects relative to it, and fit λ on runs of related projects, holding out the latest ones.</p></li>
-        </ul>
+        <p class="note">Model and figures: G. Yilmaz and H. M. Gaspar, "Measuring the cost of uniqueness: shipbuilding learning evidence applied to project-based firms", Department of Ocean Operations and Civil Engineering, NTNU Ålesund. The experience stock is applied in the order shown in the estimate: similar projects, time without related work, unrelated project, people leaving, then the tool.</p>
       </section>
     </main>
   </div>
 </div>
-<div id="tip" role="status"></div>
 
 <script>
 (function(){
 "use strict";
-var S = {unit:"labour hours",base:100000,f:10,c:12.3,Sorg:6.5,nPrev:6,r:60,gap:14,g0:6,m:0.05,spread:4,
-  nB:0,gapB:0,Sser:10,N:12,interp:"unit",m1:4,m2:20,x:0.5,emax:10,xs:1,phi:0,delta:0,lam:0,forget:"linear",cvar:false,kser:6,kint:4,dint:12,dret:75};
-var nf = new Intl.NumberFormat("en-US",{maximumFractionDigits:0});
-function fmt(x){return nf.format(Math.round(x));}
-function sgn(x){return (x>=0?"+":"−")+fmt(Math.abs(x));}
-function bOf(s){return s<=0?0:Math.log(1-s)/Math.LN2;}
-function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
-function $(id){return document.getElementById(id);}
+var $=function(id){return document.getElementById(id)};
+var P={};
+var C={s1:"var(--s1)",s2:"var(--s2)",s3:"var(--s3)",gr:"var(--muted)",ink:"var(--ink)",core:"var(--line)"};
 
-/* ---- model ---- */
-function cEff(c,f,prem){if(!S.cvar)return c; var lo=Math.min(0.03,c); return lo+(c-lo)*Math.min(1,f>0?prem/f:0);}
-function PR(f,n,b){var L=S.lam/100; return Math.max(0,1-L+(L+f)*Math.pow(1+n,b)-1);}
-function nEff(n0,gap,p){p=p||S; if(S.forget==="none")return n0; if(S.forget==="g96")return n0*Math.pow(0.96,gap); if(S.forget==="g75")return n0*Math.pow(0.75,gap); return Math.max(0,n0-p.m*Math.max(0,gap-p.g0));}
-function calc(p){
-  var b=bOf(p.Sorg/100), f=p.f/100, c=p.c/100;
-  var n0=p.r/100*p.nPrev;
-  var n1=nEff(n0,p.gap,p), loss=n0-n1;
-  var f0=PR(f,n0,b), f1=PR(f,n1,b);
-  var core=p.base, gross=core*f, credit=-core*(f-f0), gapLoss=core*(f1-f0);
-  var sub=core*(1+f1), co=sub*cEff(c,f,f1);
-  return {b:b,n0:n0,n1:n1,loss:loss,core:core,gross:gross,credit:credit,gapLoss:gapLoss,sub:sub,co:co,total:sub+co,f1:f1};
+/* ---------- model ---------- */
+function M(){
+  var S=P.S/100;
+  /* at the base rate use Erichsen's regression exponent itself */
+  return {B:Math.max(1,P.B||1),b:Math.abs(P.S-5.7)<1e-9?-0.0846:Math.log(1-S)/Math.LN2,S:S,f:P.f/100,lam:P.lam/100,rho:P.rho/100,m:P.m,g0:P.g0,d:P.d/100,
+          c1:P.c1/100,cr:P.cr/100,emax:P.emax,T:P.T};
 }
-function feff(p,n){return PR(p.f/100,n,bOf(p.Sorg/100));}
+function pick(o,k,dflt){return o&&o[k]!==undefined?o[k]:dflt}
+function u(E,m,o){var lam=pick(o,"lam",m.lam),f=pick(o,"f",m.f);return Math.max(0,(lam+f)*Math.pow(1+E,m.b)-lam)}
+function hours(E,m,o){return m.B*(1+u(E,m,o))}
+function cshare(uu,m,o){var c1=pick(o,"c1",m.c1);return m.f>0?m.cr+(c1-m.cr)*Math.min(1,uu/m.f):m.cr}
+function cost(E,m,o){var uu=u(E,m,o);return m.B*(1+uu)*(1+cshare(uu,m,o))}
+function repeat(m){return m.B*(1+m.cr)}
+function idle(E,g,m){return Math.max(0,E-m.m*Math.max(0,g-m.g0))}
+function estar(m){ if(m.lam<=0||m.b>=0||m.f<=0) return m.f<=0?0:Infinity; return Math.pow(m.lam/(m.lam+m.f),1/m.b)-1 }
+function scenario(m){
+  var keep=P.ai?0.5:0, s={};
+  s.E0=P.N*m.rho;
+  var a=idle(s.E0,P.g,m); s.E1=s.E0-(s.E0-a)*(1-keep);
+  var b=s.E1*Math.pow(m.d,P.tau); s.E2=s.E1-(s.E1-b)*(1-keep);
+  var c=s.E2*(1-third(P.q)/100); s.E3=s.E2-(s.E2-c)*(1-keep);
+  s.T=P.ai?Math.min(m.T,6):m.T;
+  s.tool=m.emax*Math.min(1,P.t/s.T);
+  s.E=s.E3+s.tool;
+  s.f=(1-P.phi/100)*m.f;
+  s.u=u(s.E,m,{f:s.f}); s.c=cshare(s.u,m); s.h=m.B*(1+s.u); s.C=s.h*(1+s.c);
+  s.Cweak=cost(s.E,m,{f:s.f,lam:0});
+  return s;
+}
+/* Firm X */
+var FXP=[[0,12],[12,24],[35,47],[47,59],[79,91],[91,103]], FXBID=117, FXLEAVE=109;
+var FXJ=[.3,.3,.5,.5,.9,.9], FXM=[.25,.25,.35,.35,.70,.70];
+var FXN=["Supply 1","Supply 2","Cruise 1","Cruise 2","Wind 1","Wind 2"];
+function fxPath(sim,scale,q,retain,m){
+  var dt=.25,E=0,last=null,out=[],i,k,t,busy;
+  for(i=0;i<=FXBID/dt;i++){
+    t=i*dt; busy=false;
+    for(k=0;k<FXP.length;k++) if(FXP[k][0]<t&&t<=FXP[k][1]) busy=true;
+    if(!busy&&last!==null&&t-last>m.g0+1e-9) E=Math.max(0,E-m.m*dt);
+    for(k=0;k<FXP.length;k++) if(Math.abs(t-FXP[k][1])<1e-9){E+=sim[k]*scale; last=t}
+    if(q>0&&Math.abs(t-FXLEAVE)<1e-9) E*=1-q*(1-retain);
+    out.push([t,E]);
+  }
+  return out;
+}
+function last(p){return p[p.length-1][1]}
+function third(v){return v===33?100/3:v} /* the slider's 33% stands for a third */
 
-/* ---- helpers for charts ---- */
-function niceTicks(lo,hi,n){
-  var span=hi-lo; if(span<=0){span=1;}
-  var raw=span/n, mag=Math.pow(10,Math.floor(Math.log(raw)/Math.LN10)), res=raw/mag;
-  var step=(res>=5?10:res>=2?5:res>=1?2:1)*mag;
-  var a=Math.floor(lo/step)*step, z=Math.ceil(hi/step)*step, t=[];
-  for(var v=a; v<=z+step*0.001; v+=step){t.push(Math.round(v*1e6)/1e6);}
+/* ---------- formatting ---------- */
+function step(m){return Math.pow(10,Math.max(0,Math.floor(Math.log10(m.B))-3))}
+function fmt(v,m){var s=step(m);return (Math.round(v/s)*s).toLocaleString("en-US")}
+function trim(s){return s.indexOf(".")>=0?s.replace(/0+$/,"").replace(/\.$/,""):s}
+function cf(v){var a=Math.abs(v);return a>=10000?trim((v/1000).toFixed(1))+"k":a>=100?String(Math.round(v)):trim(v.toFixed(2))}
+function k1(v){return Math.abs(v)>=1000?(v/1000).toFixed(1)+"k":cf(v)}
+function pc(v,dg){return (v*100).toFixed(dg===undefined?1:dg)+"%"}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function legend(id,items){$(id).innerHTML=items.map(function(i){
+  return '<span><i class="'+(i.sq?"sq":"")+'" style="'+(i.sq?"background:"+i.color:"border-color:"+i.color+(i.dash?";border-top-style:dashed":""))+'"></i>'+esc(i.label)+'</span>'}).join("")}
+
+/* ---------- charts ---------- */
+function nice(lo,hi,n){
+  if(!(hi>lo)){hi=lo+1}
+  var raw=(hi-lo)/(n||5),p=Math.pow(10,Math.floor(Math.log10(raw))),ks=[1,2,2.5,5,10],s=p,i;
+  for(i=0;i<ks.length;i++){if(ks[i]*p>=raw-1e-12){s=ks[i]*p;break}}
+  var a=Math.floor(lo/s+1e-9)*s,b=Math.ceil(hi/s-1e-9)*s,t=[];
+  for(var v=a;v<=b+s*1e-6;v+=s)t.push(+v.toFixed(8));
   return t;
 }
-var tip=$("tip");
-function showTip(html,x,y){
-  tip.innerHTML=html; tip.style.opacity=1;
-  var w=tip.offsetWidth,h=tip.offsetHeight;
-  var l=Math.min(window.innerWidth-w-8,Math.max(8,x+14)), t=Math.max(8,y-h-12);
-  tip.style.left=l+"px"; tip.style.top=t+"px";
-}
-function hideTip(){tip.style.opacity=0;}
-
-function lineChart(host,cfg){
-  var w=Math.max(260,host.clientWidth), h=w<520?250:310;
-  var m={t:12,r:cfg.endLabels?66:14,b:36,l:48};
-  var pw=w-m.l-m.r, ph=h-m.t-m.b;
-  var all=[]; cfg.series.forEach(function(s){s.pts.forEach(function(p){all.push(p.y);});});
-  (cfg.refs||[]).forEach(function(r){all.push(r.y);});
-  var lo_=Math.min.apply(null,all), hi_=Math.max.apply(null,all); if(hi_-lo_<1e-6){lo_-=1;hi_+=1;}
-  var yt=niceTicks(lo_,hi_,5);
-  var y0=yt[0], y1=yt[yt.length-1];
-  var x0=cfg.x0, x1=cfg.x1;
-  function X(v){return m.l+(v-x0)/(x1-x0)*pw;}
-  function Y(v){return m.t+ph-(v-y0)/(y1-y0)*ph;}
-  var svg='<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+cfg.aria+'">';
-  yt.forEach(function(v){
-    svg+='<line class="gr" x1="'+m.l+'" x2="'+(w-m.r)+'" y1="'+Y(v)+'" y2="'+Y(v)+'"/>';
-    svg+='<text x="'+(m.l-8)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+cfg.fy(v)+'</text>';
-  });
-  svg+='<line class="ax" x1="'+m.l+'" x2="'+(w-m.r)+'" y1="'+Y(y0)+'" y2="'+Y(y0)+'"/>';
-  cfg.xt.forEach(function(v){
-    svg+='<text x="'+X(v)+'" y="'+(h-m.b+16)+'" text-anchor="middle">'+v+'</text>';
-  });
-  svg+='<text x="'+(m.l+pw/2)+'" y="'+(h-4)+'" text-anchor="middle">'+cfg.xlab+'</text>';
-  (cfg.refs||[]).forEach(function(r){
-    svg+='<line class="ref" x1="'+m.l+'" x2="'+(w-m.r)+'" y1="'+Y(r.y)+'" y2="'+Y(r.y)+'"/>';
-    svg+='<text x="'+(m.l+6)+'" y="'+(Y(r.y)-5)+'">'+r.label+'</text>';
-  });
-  if(cfg.vline!=null){
-    svg+='<line class="ref" x1="'+X(cfg.vline)+'" x2="'+X(cfg.vline)+'" y1="'+m.t+'" y2="'+Y(y0)+'"/>';
-    svg+='<text x="'+X(cfg.vline)+'" y="'+(m.t+10)+'" text-anchor="'+(X(cfg.vline)>w-110?'end':'start')+'" dx="'+(X(cfg.vline)>w-110?-5:5)+'">'+cfg.vlab+'</text>';
+function frame(o){
+  var W=o.w||640,H=o.h||300,L=o.l===undefined?58:o.l,R=o.r||20,T=o.t||30,Bm=o.b===undefined?44:o.b;
+  var yt=o.yt||nice(o.y[0],o.y[1],5),y0=yt[0],y1=yt[yt.length-1];
+  var fr={W:W,H:H,L:L,R:R,T:T,Bm:Bm,y0:y0,y1:y1};
+  fr.x=function(v){return L+(v-o.x[0])/(o.x[1]-o.x[0])*(W-L-R)};
+  fr.y=function(v){return H-Bm-(v-y0)/(y1-y0)*(H-T-Bm)};
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.aria||"chart")+'">',i;
+  for(i=0;i<yt.length;i++){
+    s+='<line class="gr" x1="'+L+'" x2="'+(W-R)+'" y1="'+fr.y(yt[i])+'" y2="'+fr.y(yt[i])+'"/>';
+    s+='<text x="'+(L-7)+'" y="'+(fr.y(yt[i])+4)+'" text-anchor="end">'+(o.yf||cf)(yt[i])+'</text>';
   }
-  cfg.series.forEach(function(s){
-    var d=s.pts.map(function(p,i){return (i?"L":"M")+X(p.x).toFixed(1)+" "+Y(p.y).toFixed(1);}).join(" ");
-    svg+='<path d="'+d+'" fill="none" stroke="'+s.color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"'+(s.dash?' stroke-dasharray="6 4"':'')+'/>';
+  s+='<line class="ax" x1="'+L+'" x2="'+(W-R)+'" y1="'+(H-Bm)+'" y2="'+(H-Bm)+'"/>';
+  (o.xt||[]).forEach(function(t){
+    var v=typeof t==="object"?t.v:t,lab=typeof t==="object"?t.l:cf(t);
+    s+='<line class="ax" x1="'+fr.x(v)+'" x2="'+fr.x(v)+'" y1="'+(H-Bm)+'" y2="'+(H-Bm+4)+'"/>';
+    String(lab).split("\n").forEach(function(ln,j){s+='<text x="'+fr.x(v)+'" y="'+(H-Bm+17+j*13)+'" text-anchor="middle">'+esc(ln)+'</text>'});
   });
-  if(cfg.endLabels){
-    var ends=cfg.series.map(function(s){var p=s.pts[s.pts.length-1];return {y:Y(p.y),s:s};}).sort(function(a,b){return a.y-b.y;});
-    for(var i=1;i<ends.length;i++){if(ends[i].y-ends[i-1].y<13){ends[i].y=ends[i-1].y+13;}}
-    var lim=Y(y0)+4, over=ends[ends.length-1].y-lim;
-    if(over>0){for(var q=ends.length-1;q>=0;q--){ends[q].y=Math.min(ends[q].y,lim-(ends.length-1-q)*13);}}
-    ends.forEach(function(e){svg+='<text x="'+(w-m.r+6)+'" y="'+(e.y+4)+'">'+e.s.short+'</text>';});
-  }
-  svg+='<line id="xh" class="ax" y1="'+m.t+'" y2="'+Y(y0)+'" style="display:none"/>';
-  cfg.series.forEach(function(s,i){svg+='<circle id="dot'+i+'" r="4" fill="'+s.color+'" stroke="'+css("--surface")+'" stroke-width="2" style="display:none"/>';});
-  svg+='<rect x="'+m.l+'" y="'+m.t+'" width="'+pw+'" height="'+ph+'" fill="transparent" id="hit" style="touch-action:pan-y"/></svg>';
-  var lg='<div class="legend">'+cfg.series.map(function(s){return '<span><i style="border-color:'+s.color+';border-top-style:'+(s.dash?'dashed':'solid')+'"></i>'+s.name+'</span>';}).join("")+'</div>';
-  var rows=cfg.series[0].pts.map(function(p,i){
-    return '<tr><td>'+p.x+'</td>'+cfg.series.map(function(s){return '<td>'+cfg.fy(s.pts[i].y)+'</td>';}).join("")+'</tr>';
-  }).join("");
-  var tb='<details class="dt"><summary>Show data table</summary><div class="tablewrap"><table><thead><tr><th>'+cfg.xlab+'</th>'+
-    cfg.series.map(function(s){return '<th>'+s.short+'</th>';}).join("")+'</tr></thead><tbody>'+rows+'</tbody></table></div></details>';
-  var open=host.querySelector("details")&&host.querySelector("details").open;
-  host.innerHTML=lg+svg+tb;
-  if(open){host.querySelector("details").open=true;}
-  var sv=host.querySelector("svg"), hit=host.querySelector("#hit"), xh=host.querySelector("#xh");
-  function move(e){
-    var r=sv.getBoundingClientRect(), px=(e.clientX-r.left)*(w/r.width);
-    var xv=x0+(px-m.l)/pw*(x1-x0), best=0, bd=1e9;
-    cfg.series[0].pts.forEach(function(p,i){var d=Math.abs(p.x-xv); if(d<bd){bd=d;best=i;}});
-    var px2=X(cfg.series[0].pts[best].x);
-    xh.setAttribute("x1",px2); xh.setAttribute("x2",px2); xh.style.display="";
-    var html='<b>'+cfg.xlab+' '+cfg.series[0].pts[best].x+'</b>';
-    cfg.series.forEach(function(s,i){
-      var d=host.querySelector("#dot"+i), p=s.pts[best];
-      d.setAttribute("cx",X(p.x)); d.setAttribute("cy",Y(p.y)); d.style.display="";
-      html+=s.short+': '+cfg.fy(p.y)+'<br>';
-    });
-    showTip(html,e.clientX,e.clientY);
-  }
-  function leave(){xh.style.display="none"; cfg.series.forEach(function(s,i){host.querySelector("#dot"+i).style.display="none";}); hideTip();}
-  hit.addEventListener("pointermove",move); hit.addEventListener("pointerdown",move); hit.addEventListener("pointerleave",leave);
-}
-
-/* ---- render ---- */
-function pct(x,d){return x.toFixed(d==null?1:d)+"%";}
-function renderControls(){
-  $("o-base").textContent=fmt(S.base)+" "+S.unit;
-  $("o-f").textContent=pct(S.f); $("o-c").textContent=pct(S.c,S.c%1?2:1);
-  $("o-Sorg").textContent=pct(S.Sorg);
-  $("o-nPrev").textContent=S.nPrev; $("o-r").textContent=S.r+"%";
-  $("o-gap").textContent=S.gap+" mo"; $("o-g0").textContent=S.g0+" mo";
-  $("o-m").textContent=S.m.toFixed(2)+" proj.";
-  $("o-spread").textContent="±"+S.spread;
-  $("o-nB").textContent=S.nB; $("o-gapB").textContent=S.gapB+" mo";
-  $("o-Sser").textContent=pct(S.Sser); $("o-N").textContent=S.N;
-  $("o-m1").textContent=S.m1; $("o-m2").textContent=S.m2;
-  $("o-kser").textContent=S.kser; $("o-kint").textContent=Math.min(S.kint,S.kser-1); $("o-dint").textContent=S.dint+" mo"; $("o-dret").textContent=S.dret+"% a month";
-  $("o-x").textContent=S.x.toFixed(2)+"% of core"; $("o-emax").textContent=S.emax+" projects"; $("o-xs").textContent=S.xs.toFixed(1)+"% of core"; $("o-phi").textContent=S.phi+"%"; $("o-delta").textContent=S.delta+"%";
-  $("o-lam").textContent=S.lam+"%"; $("form-hint").textContent=S.lam===0?"Only the novelty premium is learnable (Form A). Slow; the cautious reading for different designs.":S.lam===100?"The whole cost of the new design follows the curve until the floor (Form B). Fast; matches series data.":"Between the two forms: "+S.lam+"% of core work is learnable again for a new design.";
-  document.querySelectorAll(".chips").forEach(function(g){
-    var v=parseFloat(S[g.getAttribute("data-for")]);
-    g.querySelectorAll(".chip").forEach(function(b){b.setAttribute("aria-pressed",Math.abs(parseFloat(b.getAttribute("data-v"))-v)<1e-9?"true":"false");});
+  if(o.xl)s+='<text x="'+((L+W-R)/2)+'" y="'+(H-5)+'" text-anchor="middle">'+esc(o.xl)+'</text>';
+  if(o.yl)s+='<text x="4" y="12" text-anchor="start">'+esc(o.yl)+'</text>';
+  (o.bands||[]).forEach(function(b){s+='<rect x="'+fr.x(b[0])+'" y="'+T+'" width="'+(fr.x(b[1])-fr.x(b[0]))+'" height="'+(H-T-Bm)+'" style="fill:var(--chip)"/>'});
+  (o.hrefs||[]).forEach(function(r){
+    if(r.y<y0||r.y>y1)return;
+    s+='<line class="ref" x1="'+L+'" x2="'+(W-R)+'" y1="'+fr.y(r.y)+'" y2="'+fr.y(r.y)+'"/>';
+    if(r.label)s+='<text x="'+(r.start?L+5:W-R-2)+'" y="'+(fr.y(r.y)+(r.below?13:-5))+'" text-anchor="'+(r.start?"start":"end")+'">'+esc(r.label)+'</text>';
   });
-}
-
-function renderEstimate(){
-  var r=calc(S), u=S.unit;
-  var lo=calc({base:S.base,f:S.f*0.75,c:S.c*0.75,Sorg:S.Sorg+S.spread,nPrev:S.nPrev,r:S.r,gap:S.gap,g0:S.g0,m:S.m}).total;
-  var hi=calc({base:S.base,f:S.f*1.25,c:S.c*1.25,Sorg:Math.max(0,S.Sorg-S.spread),nPrev:S.nPrev,r:S.r,gap:S.gap,g0:S.g0,m:S.m}).total;
-  var over=(r.total/r.core-1)*100;
-  $("hero").innerHTML=
-    '<div><div class="k">Expected cost</div><div class="v num">'+fmt(r.total)+'</div><div class="s">'+u+'</div></div>'+
-    '<div><div class="k">Above core baseline</div><div class="v num">+'+over.toFixed(1)+'%</div><div class="s">baseline '+fmt(r.core)+' '+u+'</div></div>'+
-    '<div><div class="k">Scenario band</div><div class="v num">'+fmt(lo)+' to '+fmt(hi)+'</div><div class="s">not a statistical interval</div></div>';
-  var rows=[
-    ["Core baseline",r.core,"Cost at the yard's core productivity",null],
-    ["Novelty penalty, gross",r.gross,"f = "+pct(S.f)+" of baseline","s2"],
-    ["Learning credit",r.credit,"Experience of "+r.n0.toFixed(1)+" effective projects, b = "+r.b.toFixed(3),"s1"],
-    ["Loss from the gap",r.gapLoss,"Gap of "+S.gap+" months costs "+r.loss.toFixed(1)+" of those projects","s2"],
-    ["Change orders",r.co,pct(S.c,S.c%1?2:1)+" of the recurring cost","s2"]
-  ];
-  var maxA=Math.max.apply(null,rows.slice(1).map(function(x){return Math.abs(x[1]);}).concat([1]));
-  var h='<thead><tr><th>Step</th><th class="r">'+u+'</th><th>Size of step</th><th>Basis</th></tr></thead><tbody>';
-  rows.forEach(function(x,i){
-    var bar=i===0?'':'<div class="bar-track"><div class="bar-fill" style="left:0;width:'+(Math.abs(x[1])/maxA*100).toFixed(1)+'%;background:var(--'+x[3]+')"></div></div>';
-    h+='<tr><td>'+x[0]+'</td><td class="r num mono">'+(i===0?fmt(x[1]):sgn(x[1]))+'</td><td class="bar">'+bar+'</td><td class="note" style="font-size:12.5px">'+x[2]+'</td></tr>';
+  (o.vrefs||[]).forEach(function(r){
+    s+='<line class="ref" x1="'+fr.x(r.x)+'" x2="'+fr.x(r.x)+'" y1="'+T+'" y2="'+(H-Bm)+'"/>';
+    if(r.label)s+='<text x="'+(fr.x(r.x)+(r.left?-4:4))+'" y="'+(T+11)+'" text-anchor="'+(r.left?"end":"start")+'">'+esc(r.label)+'</text>';
   });
-  h+='<tr class="tot"><td>Expected cost</td><td class="r num mono">'+fmt(r.total)+'</td><td></td><td></td></tr></tbody>';
-  $("bu").innerHTML=h;
-  $("bu-note").textContent="Bars share one scale and show the size of each step, not a running total. Orange raises cost, blue lowers it. Effective experience after the gap is "+r.n1.toFixed(1)+" projects, down from "+r.n0.toFixed(1)+".";
+  fr.s=s; return fr;
 }
-
-function renderFirms(){
-  var A=calc(S), B=calc(Object.assign({},S,{nPrev:S.nB,gap:S.gapB}));
-  var mx=Math.max(A.total,B.total);
-  function bar(name,r,nPrev,gap){
-    var nov=r.sub-r.core;
-    var segs=[[r.core,"var(--muted)","Core baseline"],[nov,"var(--s2)","Novelty premium"],[r.co,"var(--s1)","Change orders"]];
-    var st=segs.map(function(s){return '<span style="width:'+(s[0]/mx*100).toFixed(2)+'%;background:'+s[1]+'" title="'+s[2]+'"></span>';}).join("");
-    return '<div class="hb"><div class="lab"><b>'+name+'</b><span class="num mono">'+fmt(r.total)+' '+S.unit+'</span></div>'+
-      '<div class="stack" role="img" aria-label="'+name+' cost build-up">'+st+'</div>'+
-      '<div class="note">'+nPrev+' comparable projects, '+gap+' months since the last. Core '+fmt(r.core)+' + novelty '+fmt(nov)+' + changes '+fmt(r.co)+'.</div></div>';
-  }
-  var diff=B.total-A.total;
-  $("firms").innerHTML=
-    '<div class="legend"><span><i class="sq" style="background:var(--muted)"></i>Core baseline</span><span><i class="sq" style="background:var(--s2)"></i>Novelty premium</span><span><i class="sq" style="background:var(--s1)"></i>Change orders</span></div>'+
-    bar("Firm A (scenario)",A,S.nPrev,S.gap)+bar("Firm B",B,S.nB,S.gapB)+
-    '<p>'+(Math.abs(diff)<1?'The two firms are expected to cost the same.':
-      'Firm '+(diff>0?'B':'A')+' is expected to cost <b class="num">'+fmt(Math.abs(diff))+' '+S.unit+'</b> more, '+
-      '<b class="num">'+(Math.abs(diff)/Math.min(A.total,B.total)*100).toFixed(1)+'%</b> above the cheaper firm. The whole gap comes from the novelty premium, since both firms start from the same baseline and the same change-order rate.')+'</p>';
-}
-
-function costWith(lam,n,f,c,x){
-  var saveL=S.lam; S.lam=lam;
-  var b=bOf(S.Sorg/100), g=x>0?1-Math.exp(-x/S.xs):0;
-  var fe=f*(1-S.phi/100*g), ne=n+S.emax*g;
-  var pr=PR(fe,ne,b); var v=S.base*((1-S.delta/100*g)*(1+pr)*(1+cEff(c,f,pr))+x/100);
-  S.lam=saveL; return v;
-}
-function renderApproaches(){
-  var nA=nEff(S.r/100*S.nPrev,S.gap), nB=nEff(S.r/100*S.nB,S.gapB), f=S.f/100, c=S.c/100;
-  var re=$("ap-reuse").checked, fr=$("ap-freeze").checked, to=$("ap-tools").checked;
-  var fB=re?f/2:f, cB=fr?Math.min(c,0.086):c, xB=to?S.x:0;
-  var rows=[["Firm A (scenario)",nA,f,c,0],["Firm B as is",nB,f,c,0],["Firm B with the ticked approaches",nB,fB,cB,xB]];
-  var lams=[S.lam,0,100], u=S.unit;
-  var h='<thead><tr><th>Case</th><th class="r" style="text-transform:none">Current, λ = '+S.lam+'%</th><th class="r" style="text-transform:none">Form A, λ = 0</th><th class="r" style="text-transform:none">Form B, λ = 100%</th></tr></thead><tbody>';
-  rows.forEach(function(r){h+='<tr><td>'+r[0]+'</td>'+lams.map(function(L){return '<td class="r num mono">'+fmt(costWith(L,r[1],r[2],r[3],r[4]))+'</td>';}).join("")+'</tr>';});
-  $("appr").innerHTML=h+'</tbody>';
-  var gapAB=costWith(S.lam,nB,f,c,0)-costWith(S.lam,nA,f,c,0), closed=costWith(S.lam,nB,f,c,0)-costWith(S.lam,nB,fB,cB,xB);
-  $("appr-note").innerHTML="Under the current λ, Firm B starts <b class=num>"+fmt(Math.abs(gapAB))+" "+u+"</b> "+(gapAB>=0?"above":"below")+" Firm A, and the ticked approaches save it <b class=num>"+fmt(closed)+" "+u+"</b>. Reuse and a frozen specification pay the same whatever λ is; experience and knowledge tools pay little at λ = 0 and up to the whole premium at λ = 100.";
-}
-function uniqueRun(gap,N){
-  var p=Object.assign({},S,{gap:gap}), A=calc(p), n=A.n1, r=S.r/100, b=A.b, exp=[], cost=[];
-  for(var k=1;k<=N;k++){
-    exp.push({x:k,y:n}); cost.push({x:k,y:100*(1+PR(S.f/100,n,b))});
-    n=nEff(n+r,gap,p);
-  }
-  return {exp:exp,cost:cost};
-}
-function seriesRun(N){
-  var A=calc(S), bs=bOf(S.Sser/100), pts=[];
-  for(var k=1;k<=N;k++){
-    var mult=S.interp==="unit"?Math.pow(k,bs):(Math.pow(k,1+bs)-Math.pow(k-1,1+bs)); var L=S.lam/100; var prem=Math.max(0,1-L+(L+A.f1)*mult-1);
-    pts.push({x:k,y:100*(1+prem)});
-  }
-  return pts;
-}
-function renderSeries(){
-  var A=calc(S), N=S.N, bs=bOf(S.Sser/100);
-  var pts1=seriesRun(N), pts2=uniqueRun(S.gap,N).cost;
-  lineChart($("ch-ser"),{
-    aria:"Cost per project for a series of identical ships and for a run of unique projects",
-    series:[{name:"Series of identical ships (Erichsen)",short:"Series",color:css("--s1"),pts:pts1},
-            {name:"Run of unique projects",short:"Unique",color:css("--s2"),pts:pts2}],
-    refs:[{y:100,label:"Core productivity"}],
-    x0:1,x1:N,xt:niceTicks(1,N,6).filter(function(v){return v>=1&&v<=N;}).map(Math.round),xlab:"Project number",
-    fy:function(v){return v.toFixed(1)+"%";},endLabels:true
-  });
-  var bb=bs;
-  $("eri").textContent="y(n) = a · n^b\nb = ln(1 − S) / ln 2        S = 1 − 2^b\n\nS = "+S.Sser.toFixed(1)+"%  →  b = "+bb.toFixed(4)+
-    (S.interp==="avg"?"\nunit cost of ship n = a · [ n^(1+b) − (n−1)^(1+b) ]":"");
-  var ratio=Math.pow(S.m2/S.m1,1-bs);
-  $("marg").innerHTML="Adding one ship to a series of "+S.m1+" lowers unit cost by about <b class=num>"+ratio.toFixed(1)+" times</b> as much as adding one to a series of "+S.m2+
-    ". This is "+"(n₂ / n₁)^(1 − b), the ratio of the slopes of y = a·n^b at the two points. With the scenario's learning rate, b = "+bs.toFixed(3)+".";
-}
-
-function renderGap(){
-  var lvls=[2,6,12], cols=[css("--s3"),css("--s1"),css("--s2")], names=["2 comparable projects","6 comparable projects","12 comparable projects"];
-  var series=lvls.map(function(e,i){
-    var pts=[]; for(var g=0;g<=36;g++){
-      var n=nEff(S.r/100*e,g);
-      pts.push({x:g,y:100*(1+PR(S.f/100,n,bOf(S.Sorg/100)))});
+function narrow(id,o){if($(id).closest(".two")){o.w=440;o.h=(o.h||300)+10;o.l=50}}
+function lineChart(id,o){
+  narrow(id,o);
+  var ys=[];o.series.forEach(function(se){se.pts.forEach(function(p){ys.push(p[1])})});
+  (o.hrefs||[]).forEach(function(r){if(r.fit)ys.push(r.y)});
+  if(!o.y){var lo=Math.min.apply(null,ys),hi=Math.max.apply(null,ys),pad=(hi-lo)*.08||1;o.y=[o.ymin!==undefined?o.ymin:lo-pad*.2,hi+pad]}
+  var fr=frame(o),s=fr.s;
+  o.series.forEach(function(se){
+    var d="",i,p,prev;
+    for(i=0;i<se.pts.length;i++){
+      p=se.pts[i];
+      if(se.step&&i>0){d+="L"+fr.x(p[0]).toFixed(1)+" "+fr.y(prev[1]).toFixed(1)}
+      d+=(i?"L":"M")+fr.x(p[0]).toFixed(1)+" "+fr.y(p[1]).toFixed(1); prev=p;
     }
-    return {name:names[i],short:e+" proj.",color:cols[i],pts:pts};
-  });
-  lineChart($("ch-gap"),{
-    aria:"Project cost against months since the last comparable project, for three experience levels",
-    series:series,refs:[{y:100,label:"Core productivity"}],
-    x0:0,x1:36,xt:[0,6,12,18,24,30,36],xlab:"Months since last comparable project",
-    fy:function(v){return v.toFixed(1)+"%";},endLabels:true,vline:Math.min(S.gap,36),vlab:"Scenario gap"
-  });
-}
-
-
-function renderInterrupt(){
-  var K=S.kser, k=Math.min(S.kint,K-1), D=S.dint, d=S.dret/100, b=bOf(S.Sorg/100), f=S.f/100, c=S.c/100, u=S.unit;
-  function run(withInt){var E=0,out=[]; for(var i=1;i<=K;i++){ if(withInt&&i===k+1){E=E*Math.pow(d,D);} var pr=PR(f,E,b); out.push(S.base*(1+pr)*(1+cEff(c,f,pr))); E+=1;} return out;}
-  var base=run(false), intr=run(true), extra=0; for(var i=k;i<K;i++){extra+=intr[i]-base[i];}
-  var UZ=S.base*f*(1+c), back=(base[0]-base[k])>1?(intr[k]-base[k])/(base[0]-base[k]):0;
-  var sc=S.base/100;
-  lineChart($("ch-int"),{aria:"Cost per ship of a series with and without an odd contract after ship "+k,
-    series:[{name:"Series uninterrupted",short:"Series",color:css("--muted"),pts:base.map(function(v,i){return {x:i+1,y:v/sc};})},
-            {name:"Odd contract of "+D+" months after ship "+k,short:"Interrupted",color:css("--s2"),pts:intr.map(function(v,i){return {x:i+1,y:v/sc};})}],
-    refs:[{y:base[0]/sc,label:"First-ship level"}],x0:1,x1:K,xt:niceTicks(1,K,6).filter(function(v){return v>=1&&v<=K;}).map(Math.round),xlab:"Ship in the series",
-    fy:function(v){return v.toFixed(1)+"%";},endLabels:true,vline:k+0.5,vlab:"odd contract"});
-  $("hero-int").innerHTML=
-    '<div><div class="k" style="text-transform:none">Visible cost of the odd contract, U<sub>Z</sub></div><div class="v num">'+fmt(UZ)+'</div><div class="s">its own premium and first-ship change orders, same size</div></div>'+
-    '<div><div class="k" style="text-transform:none">Hidden cost: extra hours on ships '+(k+1)+'–'+K+'</div><div class="v num">'+fmt(extra)+'</div><div class="s">'+(extra/UZ).toFixed(2)+' × the visible cost</div></div>'+
-    '<div><div class="k" style="text-transform:none">Ship '+(k+1)+' after the interruption</div><div class="v num">'+fmt(intr[k])+'</div><div class="s">'+Math.round(back*100)+'% of the way back to ship 1</div></div>';
-  $("int-note").innerHTML="Cost is a percentage of the core baseline, with change orders; the series uses the scenario's λ, learning rate, premium and change-order setting. The bid rule: the price of a contract that interrupts a line must cover its own uniqueness cost and the re-learning on every ship still to come, about (ships remaining) × (first-ship cost − floor) when the interruption is long. It is zero after the last ship of the series. Under Form A (λ = 0) the hidden cost stays below half the visible one, because a series gains little there; under Form B with 75% retention and a twelve-month contract it is 1.1 times the visible cost, and twice it when change orders fall with experience.";
-}
-
-function toolIdx(x){
-  var b=bOf(S.Sorg/100), g=1-Math.exp(-x/S.xs);
-  var n=nEff(S.r/100*S.nPrev,S.gap)+S.emax*g;
-  var f=S.f/100*(1-S.phi/100*g);
-  var pr=PR(f,n,b); return 100*(1-S.delta/100*g)*(1+pr)*(1+cEff(S.c/100,S.f/100,pr))+x;
-}
-function renderTool(){
-  var c0=toolIdx(0), best=0, bs=0, pts=[];
-  for(var i=0;i<=80;i++){var x=i*0.05, sv=c0-toolIdx(x); pts.push({x:+x.toFixed(2),y:sv}); if(sv>bs){bs=sv;best=x;}}
-  var cur=c0-toolIdx(S.x), prem=100*PR(S.f/100,nEff(S.r/100*S.nPrev,S.gap),bOf(S.Sorg/100))*(1+S.c/100);
-  var u=S.unit;
-  $("hero-tool").innerHTML=
-    '<div><div class="k">Best investment</div><div class="v num">'+(bs>0.005?best.toFixed(2)+'%':'none')+'</div><div class="s">of core cost</div></div>'+
-    '<div><div class="k">Net saving at best</div><div class="v num">'+bs.toFixed(2)+'</div><div class="s">index points, about '+fmt(bs/100*S.base)+' '+u+'</div></div>'+
-    '<div><div class="k">Net saving at your setting</div><div class="v num">'+(cur>=0?'+':'−')+Math.abs(cur).toFixed(2)+'</div><div class="s">learning and reuse can recover at most the premium, '+prem.toFixed(1)+' points</div></div>';
-  var lo=Math.min.apply(null,pts.map(function(p){return p.y;}));
-  lineChart($("ch-tool"),{
-    aria:"Net saving against investment in knowledge tools, as a percent of core cost",
-    series:[{name:"Net saving",short:"net",color:css("--s1"),pts:pts}],
-    refs:[{y:0,label:"Break-even"}],
-    x0:0,x1:4,xt:[0,1,2,3,4],xlab:"Investment in tools and processes, % of core cost",
-    fy:function(v){return v.toFixed(1);},vline:S.x,vlab:"Your setting"
-  });
-}
-
-
-/* ---- project history plate ---- */
-var HIST_DEFAULT=[["Platform supply vessel",0.3,0.25,0],["Sister vessel",0.3,0.25,9],["Expedition cruise vessel",0.5,0.35,11],["Sister vessel",0.5,0.35,8],["Wind service operation vessel",0.9,0.70,20],["Sister vessel",0.9,0.70,10]];
-var HIST=HIST_DEFAULT.map(function(r){return r.slice();});
-function histRowsHtml(){
-  return HIST.map(function(r,i){return '<tr><td><input type="text" value="'+r[0].replace(/"/g,'&quot;')+'" data-h="'+i+':0" style="width:100%"></td>'+
-    '<td><input type="number" step="0.05" min="0" max="1" value="'+r[1]+'" data-h="'+i+':1" style="width:70px"></td>'+
-    '<td><input type="number" step="0.05" min="0" max="1" value="'+r[2]+'" data-h="'+i+':2" style="width:70px"></td>'+
-    '<td><input type="number" step="1" min="0" max="120" value="'+r[3]+'" data-h="'+i+':3" style="width:70px"'+(i===0?' disabled':'')+'></td>'+
-    '<td><button class="chip" data-del="'+i+'" title="remove">×</button></td></tr>';}).join("");
-}
-function histStock(col,scale){
-  var E=0, path=[{t:0,E:0}], t=0;
-  HIST.forEach(function(r,i){
-    if(i>0){var gap=+r[3]||0; for(var k=1;k<=20;k++){var mo=t+gap*k/20; path.push({t:mo,E:nEff(E,gap*k/20)});} E=nEff(E,gap); t+=gap;}
-    E+=Math.min(1,Math.max(0,(+r[col]||0)*(scale||1))); path.push({t:t,E:E});
-  });
-  var gb=+$("hist-gap").value||0; for(var k=1;k<=20;k++){path.push({t:t+gb*k/20,E:nEff(E,gb*k/20)});}
-  return {n:nEff(E,gb),path:path,tbid:t+gb};
-}
-function histCost(n,lam,f,c){var b=bOf(S.Sorg/100),L=lam; var pr=Math.max(0,(L+f)*Math.pow(1+n,b)-L); return S.base*(1+pr)*(1+cEff(c/100,f,pr));}
-function renderHist(){
-  if(!$("hist-rows").innerHTML){$("hist-rows").innerHTML=histRowsHtml();}
-  var J=histStock(1), M=histStock(2), err=(+$("hist-err").value||0)/100, f=S.f/100, c=S.c, lam=S.lam/100, u=S.unit;
-  var lams=[0,0.5,1], nfl=Math.pow(1/(1+f),1/bOf(S.Sorg/100))-1;
-  lineChart($("ch-hist"),{aria:"Experience stock over the project history, judged and measured",
-    series:[{name:"Relatedness as judged",short:"judged",color:css("--s1"),pts:J.path.map(function(p){return {x:p.t,y:p.E};})},
-            {name:"As measured from shared blocks",short:"measured",color:css("--s2"),pts:M.path.map(function(p){return {x:p.t,y:p.E};})}],
-    refs:[{y:nfl,label:"Form B floor above n = "+nfl.toFixed(1)}],x0:0,x1:Math.max(12,J.tbid),xt:(function(){var o=[];for(var k=0;k<=Math.max(12,J.tbid);k+=12)o.push(k);return o;})(),xlab:"Months from the first project",fy:function(v){return v.toFixed(1);},vline:J.tbid,vlab:"bid"});
-  var h='<thead><tr><th>Case</th>'+lams.map(function(L){return '<th class="r" style="text-transform:none">λ = '+L+'</th>';}).join("")+'</tr></thead><tbody>';
-  h+='<tr><td>Stock at bid, judged n = '+J.n.toFixed(2)+'</td>'+lams.map(function(L){return '<td class="r num mono">'+fmt(histCost(J.n,L,f,c))+'</td>';}).join("")+'</tr>';
-  h+='<tr><td>Stock at bid, measured n = '+M.n.toFixed(2)+'</td>'+lams.map(function(L){return '<td class="r num mono">'+fmt(histCost(M.n,L,f,c))+'</td>';}).join("")+'</tr>';
-  h+='<tr><td>No related projects</td>'+lams.map(function(L){return '<td class="r num mono">'+fmt(histCost(0,L,f,c))+'</td>';}).join("")+'</tr></tbody>';
-  $("hist-out").innerHTML=h;
-  (function(){
-    var b=bOf(S.Sorg/100), d=S.dret/100, cc=S.c/100;
-    function U(n,L){var pr=Math.max(0,(L+f)*Math.pow(1+n,b)-L); return S.base*pr*(1+cEff(cc,f,pr));}
-    var opts=[["Related project (ρ = 0.7)",function(n){return n+0.7;}],["Unrelated project (ρ = 0.2), interruption rate "+Math.round(d*100)+"%",function(n){return n*Math.pow(d,12)+0.2;}],["No project for 12 months",function(n){return nEff(n,12);}]];
-    var t='<thead><tr><th>Option for the next year</th><th class="r">Stock left, judged / measured</th><th class="r">Next bid, judged (A / B)</th><th class="r">Next bid, measured (A / B)</th><th class="r">Hidden cost vs. the related project, judged; measured (A / B)</th></tr></thead><tbody>';
-    var rj=opts[0][1](J.n), rm=opts[0][1](M.n);
-    opts.forEach(function(o,i){var nj=o[1](J.n), nm=o[1](M.n);
-      var hid=i===0?'–':fmt(U(nj,0)-U(rj,0))+' / '+fmt(U(nj,1)-U(rj,1))+';&nbsp; '+fmt(U(nm,0)-U(rm,0))+' / '+fmt(U(nm,1)-U(rm,1));
-      t+='<tr><td>'+o[0]+'</td><td class="r num mono">'+nj.toFixed(2)+' / '+nm.toFixed(2)+'</td><td class="r num mono">'+fmt(U(nj,0))+' / '+fmt(U(nj,1))+'</td><td class="r num mono">'+fmt(U(nm,0))+' / '+fmt(U(nm,1))+'</td><td class="r num mono">'+hid+'</td></tr>';});
-    $("hist-dec").innerHTML=t+'</tbody>';
-  })();
-  // bid intervals
-  var lo1=1e18,hi1=-1e18; for(var sc=1-err;sc<=1+err+1e-9;sc+=Math.max(0.01,err/4)){var n=histStock(1,sc).n; for(var L=0;L<=1.0001;L+=0.05){var v=histCost(n,L,f,c); lo1=Math.min(lo1,v); hi1=Math.max(hi1,v);}}
-  var lo2=1e18,hi2=-1e18; for(var L2=0;L2<=1.0001;L2+=0.05){var v2=histCost(M.n,L2,f,c); lo2=Math.min(lo2,v2); hi2=Math.max(hi2,v2);}
-  var lo3=Math.min(histCost(M.n,Math.max(0,lam-0.15),f,c),histCost(M.n,Math.min(1,lam+0.15),f,c)), hi3=Math.max(histCost(M.n,Math.max(0,lam-0.15),f,c),histCost(M.n,Math.min(1,lam+0.15),f,c));
-  $("hero-hist").innerHTML=
-    '<div><div class="k" style="text-transform:none">Today: judged ±'+Math.round(err*100)+'%, λ unknown</div><div class="v num">'+fmt(lo1)+' – '+fmt(hi1)+'</div><div class="s">width '+fmt(hi1-lo1)+' '+u+' ('+((hi1-lo1)/lo1*100).toFixed(1)+'%)</div></div>'+
-    '<div><div class="k" style="text-transform:none">Relatedness measured, λ unknown</div><div class="v num">'+fmt(lo2)+' – '+fmt(hi2)+'</div><div class="s">width '+fmt(hi2-lo2)+' '+u+'</div></div>'+
-    '<div><div class="k" style="text-transform:none">Measured, λ = '+lam.toFixed(2)+' ± 0.15</div><div class="v num">'+fmt(lo3)+' – '+fmt(hi3)+'</div><div class="s">width '+fmt(hi3-lo3)+' '+u+'</div></div>';
-  $("hist-note").innerHTML="The three readouts are the bid interval before and after a digital thread: with relatedness judged and λ unknown; with lineage and dates recorded so that relatedness is measured; and after λ has been estimated on the firm's own runs (taken here as the scenario's λ ± 0.15). Reuse and change control, which move the whole interval down, are in Plate 2. Under Form A the judged-versus-measured difference is small; under Form B it is large when the stock sits near the floor threshold, as in the paper's detailed case.";
-}
-function wireHist(){
-  $("hist-rows").innerHTML=histRowsHtml();
-  $("hist-rows").addEventListener("input",function(e){var k=e.target.getAttribute("data-h"); if(!k)return; var p=k.split(":"); HIST[+p[0]][+p[1]]=p[1]==="0"?e.target.value:parseFloat(e.target.value); renderHist();});
-  $("hist-rows").addEventListener("click",function(e){var d=e.target.getAttribute("data-del"); if(d===null)return; HIST.splice(+d,1); if(HIST.length&&HIST[0]) HIST[0][3]=0; $("hist-rows").innerHTML=histRowsHtml(); renderHist();});
-  $("hist-add").addEventListener("click",function(){HIST.push(["Project "+(HIST.length+1),0.5,0.4,12]); $("hist-rows").innerHTML=histRowsHtml(); renderHist();});
-  $("hist-reset").addEventListener("click",function(){HIST=HIST_DEFAULT.map(function(r){return r.slice();}); $("hist-rows").innerHTML=histRowsHtml(); $("hist-gap").value=14; $("hist-err").value=30; renderHist();});
-  ["hist-gap","hist-err"].forEach(function(id){$(id).addEventListener("input",renderHist);});
-}
-
-function renderAll(){renderControls();renderEstimate();renderFirms();renderApproaches();renderHist();renderSeries();renderGap();renderInterrupt();renderMore();renderTool();}
-
-
-/* ---- more figures ---- */
-function rgbOf(v){var e=document.createElement("span");e.style.color="var("+v+")";document.body.appendChild(e);
-  var c=getComputedStyle(e).color;document.body.removeChild(e);var m=c.match(/[\d.]+/g);return [+m[0],+m[1],+m[2]];}
-function mixRgb(a,b,t){return "rgb("+a.map(function(x,i){return Math.round(x+(b[i]-x)*t);}).join(",")+")";}
-function avgOf(pts){var sum=0;return pts.map(function(p,i){sum+=p.y;return {x:p.x,y:sum/(i+1)};});}
-function f1(v){return v.toFixed(1);}
-function pc(v){return v.toFixed(1)+"%";}
-
-function renderMore(){
-  var N=S.N, cS1=css("--s1"), cS2=css("--s2"), cS3=css("--s3");
-  /* A: curve family */
-  var muted=rgbOf("--muted"), blue=rgbOf("--s1"), fam=[];
-  fam.push({name:"S = 0% (no learning)",short:"0%",color:css("--muted"),dash:true,pts:[]});
-  [[5,.35],[10,.6],[15,.8],[20,1]].forEach(function(a){fam.push({name:"S = "+a[0]+"%",short:a[0]+"%",color:mixRgb(muted,blue,a[1]),pts:[],S:a[0]});});
-  fam[0].S=0;
-  for(var k=1;k<=25;k++){fam.forEach(function(sr){sr.pts.push({x:k,y:100*Math.pow(k,bOf(sr.S/100))});});}
-  lineChart($("ch-fam"),{aria:"Unit cost index against unit number for learning rates from 0 to 20 percent",series:fam,
-    x0:1,x1:25,xt:[1,5,10,15,20,25],xlab:"Unit number",fy:function(v){return v.toFixed(0);},endLabels:true});
-
-  /* B and C: three gap lengths */
-  var gaps=[0,S.gap,36], cols=[cS3,cS1,cS2], nm=["No gap (0 mo)","Scenario ("+S.gap+" mo)","Long gap (36 mo)"], sh=["0 mo",S.gap+" mo","36 mo"];
-  var runs=gaps.map(function(g){return uniqueRun(g,N);});
-  function ser(key){return runs.map(function(r,i){return {name:nm[i],short:sh[i],color:cols[i],pts:r[key]};});}
-  var xt=niceTicks(1,N,6).filter(function(v){return v>=1&&v<=N;}).map(Math.round);
-  lineChart($("ch-exp"),{aria:"Effective experience over a run of unique projects for three gap lengths",series:ser("exp"),
-    x0:1,x1:N,xt:xt,xlab:"Project number",fy:f1,endLabels:true});
-  lineChart($("ch-run"),{aria:"Cost per project over a run of unique projects for three gap lengths",series:ser("cost"),
-    refs:[{y:100,label:"Core productivity"}],x0:1,x1:N,xt:xt,xlab:"Project number",fy:pc,endLabels:true});
-
-  /* D: cumulative average */
-  var pS=seriesRun(N), pU=uniqueRun(S.gap,N).cost, A=calc(S), none=[];
-  for(var k=1;k<=N;k++){none.push({x:k,y:100*(1+S.f/100)});}
-  var aS=avgOf(pS), aU=avgOf(pU);
-  lineChart($("ch-avg"),{aria:"Average cost of the first n projects for a series, a unique run and a firm that learns nothing",
-    series:[{name:"Series of identical ships",short:"Series",color:cS1,pts:aS},{name:"Run of unique projects",short:"Unique",color:cS2,pts:aU},
-            {name:"No experience",short:"None",color:css("--muted"),dash:true,pts:none}],
-    refs:[{y:100,label:"Core productivity"}],x0:1,x1:N,xt:xt,xlab:"Projects built",fy:pc,endLabels:true});
-  var base=A.core/100, last=N-1;
-  var savU=(none[last].y-aU[last].y)/100*base*N, savS=(none[last].y-aS[last].y)/100*base*N;
-  $("avg-note").innerHTML="Over "+N+" projects, learning saves about <b class=num>"+fmt(savU)+" "+S.unit+"</b> in the unique run and <b class=num>"+fmt(savS)+" "+S.unit+"</b> in the series, compared with a firm that has no relevant experience. Change orders are not included.";
-
-  /* E: relatedness */
-  var ex=[2,6,12], loss=A.loss, rel=ex.map(function(e,i){
-    var pts=[]; for(var r=0;r<=100;r+=5){var n=nEff(r/100*e,S.gap); pts.push({x:r,y:100*(1+PR(S.f/100,n,A.b))});}
-    return {name:e+" comparable projects",short:e+" proj.",color:[cS3,cS1,cS2][i],pts:pts};});
-  lineChart($("ch-rel"),{aria:"Cost of the next project against relatedness of past projects for three experience levels",series:rel,
-    refs:[{y:100,label:"Core productivity"}],x0:0,x1:100,xt:[0,20,40,60,80,100],xlab:"Relatedness, %",fy:pc,endLabels:true});
-
-  renderHeat(); renderTornado();
-}
-
-function renderHeat(){
-  var host=$("ch-heat"), w=Math.max(260,host.clientWidth), ml=40, mr=10, mt=8, mb=36;
-  var cols=25, rows=31, cw=(w-ml-mr)/cols, ch=10, h=mt+rows*ch+mb;
-  var A=calc(S), b=A.b, minP=1e9, maxP=-1e9;
-  for(var rr=0;rr<rows;rr++){for(var cc=0;cc<cols;cc++){var nn=nEff(S.r/100*rr,cc*2),pp=100*PR(S.f/100,nn,b);minP=Math.min(minP,pp);maxP=Math.max(maxP,pp);}}
-  var spanP=Math.max(1e-9,maxP-minP);
-  var lo=rgbOf("--surface"), hi=rgbOf("--s2");
-  var svg='<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" role="img" aria-label="Novelty premium for each combination of past projects and months since the last project">';
-  var curC=Math.min(cols-1,Math.round(S.gap/2)), curR=Math.min(rows-1,S.nPrev);
-  for(var r=0;r<rows;r++){for(var c=0;c<cols;c++){
-    var gap=c*2, n=nEff(S.r/100*r,gap), prem=100*PR(S.f/100,n,b);
-    var t=Math.max(0,Math.min(1,(prem-minP)/spanP));
-    svg+='<rect x="'+(ml+c*cw).toFixed(1)+'" y="'+(mt+(rows-1-r)*ch)+'" width="'+(cw+0.5).toFixed(1)+'" height="'+(ch+0.5)+'" fill="'+mixRgb(lo,hi,0.06+0.94*t)+'"/>';
-  }}
-  svg+='<rect x="'+(ml+curC*cw)+'" y="'+(mt+(rows-1-curR)*ch)+'" width="'+cw+'" height="'+ch+'" fill="none" stroke="'+css("--ink")+'" stroke-width="2"/>';
-  [0,5,10,15,20,25,30].forEach(function(r){svg+='<text x="'+(ml-6)+'" y="'+(mt+(rows-1-r)*ch+ch-1)+'" text-anchor="end">'+r+'</text>';});
-  [0,12,24,36,48].forEach(function(g){svg+='<text x="'+(ml+g/2*cw)+'" y="'+(mt+rows*ch+16)+'" text-anchor="middle">'+g+'</text>';});
-  svg+='<text x="'+(ml+(w-ml-mr)/2)+'" y="'+(h-4)+'" text-anchor="middle">Months since last comparable project</text>';
-  svg+='<rect id="hh" x="'+ml+'" y="'+mt+'" width="'+(w-ml-mr)+'" height="'+(rows*ch)+'" fill="transparent" style="touch-action:pan-y"/></svg>';
-  var grad='<div class="grad"><span>'+minP.toFixed(1)+'%</span><i style="background:linear-gradient(90deg,'+mixRgb(lo,hi,0.06)+','+mixRgb(lo,hi,1)+')"></i><span>'+maxP.toFixed(1)+'% premium</span></div>'+
-    '<div class="note">Vertical axis: comparable past projects.</div>';
-  host.innerHTML=svg+grad;
-  var hh=host.querySelector("#hh"), sv=host.querySelector("svg");
-  function mv(e){
-    var rc=sv.getBoundingClientRect(), px=(e.clientX-rc.left)*(w/rc.width), py=(e.clientY-rc.top)*(h/rc.height);
-    var c=Math.max(0,Math.min(cols-1,Math.floor((px-ml)/cw))), r=Math.max(0,Math.min(rows-1,rows-1-Math.floor((py-mt)/ch)));
-    var gap=c*2, n=nEff(S.r/100*r,gap), prem=100*PR(S.f/100,n,b);
-    showTip('<b>'+r+' past projects, '+gap+' months</b>Effective experience: '+n.toFixed(1)+'<br>Premium above core: '+prem.toFixed(2)+'%',e.clientX,e.clientY);
-  }
-  hh.addEventListener("pointermove",mv); hh.addEventListener("pointerdown",mv); hh.addEventListener("pointerleave",hideTip);
-}
-
-function renderTornado(){
-  var base=calc(S).total, u=S.unit;
-  function tot(o){return calc(Object.assign({},S,o)).total-base;}
-  var nHi=S.nPrev>0?S.nPrev*2:12;
-  var items=[
-    {nm:"Novelty penalty f",a:["f × 0.5 = "+(S.f*0.5).toFixed(1)+"%",{f:S.f*0.5}],b:["f × 1.5 = "+(S.f*1.5).toFixed(1)+"%",{f:S.f*1.5}]},
-    {nm:"Change orders c",a:["c × 0.5 = "+(S.c*0.5).toFixed(1)+"%",{c:S.c*0.5}],b:["c × 1.5 = "+(S.c*1.5).toFixed(1)+"%",{c:S.c*1.5}]},
-    {nm:"Learning per doubling S",a:["S − "+S.spread+" = "+Math.max(0,S.Sorg-S.spread).toFixed(1)+"%",{Sorg:Math.max(0,S.Sorg-S.spread)}],b:["S + "+S.spread+" = "+(S.Sorg+S.spread).toFixed(1)+"%",{Sorg:S.Sorg+S.spread}]},
-    {nm:"Comparable past projects N",a:["N = 0",{nPrev:0}],b:["N = "+nHi,{nPrev:nHi}]},
-    {nm:"Relatedness r",a:["r = 0%",{r:0}],b:["r = 100%",{r:100}]},
-    {nm:"Gap since last project g",a:["g = 0 mo",{gap:0}],b:["g = 36 mo",{gap:36}]},
-    {nm:"Gap with no loss g₀",a:["g₀ = 0 mo",{g0:0}],b:["g₀ = 24 mo",{g0:24}]},
-    {nm:"Experience lost per month m",a:["m = 0",{m:0}],b:["m = 0.30",{m:0.3}]}
-  ];
-  items.forEach(function(it){it.da=tot(it.a[1]); it.db=tot(it.b[1]); it.mx=Math.max(Math.abs(it.da),Math.abs(it.db));});
-  items.sort(function(x,y){return y.mx-x.mx;});
-  var mx=Math.max(1,items[0].mx), h="";
-  items.forEach(function(it){
-    function bar(d){var w=Math.abs(d)/mx*50; return '<b style="width:'+w.toFixed(2)+'%;left:'+(d<0?(50-w):50).toFixed(2)+'%;background:var(--'+(d<0?'s1':'s2')+')"></b>';}
-    var big=Math.abs(it.da)>=Math.abs(it.db)?[it.da,it.db]:[it.db,it.da];
-    h+='<div class="row"><div class="nm">'+it.nm+'</div><div class="track" role="img" aria-label="'+it.nm+': '+sgn(it.da)+' and '+sgn(it.db)+' '+u+'">'+bar(big[0])+bar(big[1])+'</div>'+
-       '<div class="cap">'+it.a[0]+': '+sgn(it.da)+' &nbsp; '+it.b[0]+': '+sgn(it.db)+' '+u+'</div></div>';
-  });
-  $("tor").innerHTML=h;
-}
-
-/* ---- wiring ---- */
-document.querySelectorAll("[data-k]").forEach(function(el){
-  el.addEventListener("input",function(){
-    var k=el.getAttribute("data-k");
-    S[k]=el.type==="checkbox"?el.checked:(el.type==="text"||el.tagName==="SELECT")?el.value:parseFloat(el.value);
-    if(el.type!=="text"&&el.type!=="checkbox"&&el.tagName!=="SELECT"&&isNaN(S[k])){S[k]=0;}
-    renderAll();
-  });
-});
-["ap-reuse","ap-freeze","ap-tools"].forEach(function(id){$(id).addEventListener("change",renderApproaches);});
-document.querySelectorAll(".chips").forEach(function(g){
-  g.querySelectorAll(".chip").forEach(function(b){
-    b.addEventListener("click",function(){
-      var k=g.getAttribute("data-for"), v=parseFloat(b.getAttribute("data-v"));
-      S[k]=v; $(k).value=v; renderAll();
+    if(se.w!==0)s+='<path d="'+d+'" fill="none" style="stroke:'+se.color+'" stroke-width="'+(se.w||2.2)+'"'+(se.dash?' stroke-dasharray="6 4"':'')+' stroke-linejoin="round"/>';
+    if(se.dots)se.pts.forEach(function(p,i){
+      s+='<circle cx="'+fr.x(p[0])+'" cy="'+fr.y(p[1])+'" r="3.4" style="fill:'+se.color+'"><title>'+esc((se.label||"")+" · "+cf(p[0])+": "+k1(p[1]))+'</title></circle>';
+      if(se.lab&&(se.lab===true||se.lab.indexOf(i)>=0))s+='<text x="'+(fr.x(p[0])+5)+'" y="'+(fr.y(p[1])-7)+'" style="fill:var(--ink)">'+k1(p[1])+'</text>';
     });
   });
+  (o.notes||[]).forEach(function(n){s+='<text x="'+fr.x(n.x)+'" y="'+fr.y(n.y)+'" text-anchor="'+(n.a||"start")+'" style="fill:'+(n.color||"var(--ink2)")+'">'+esc(n.t)+'</text>'});
+  $(id).innerHTML=s+"</svg>";
+}
+/* bars: o.cats labels; o.sets [{color, vals}] grouped, or o.stack [{color, vals}] stacked from o.y[0]; o.marks vals (black tick); o.tot labels */
+function barChart(id,o){
+  narrow(id,o);
+  var n=o.cats.length; o.x=[0,n];
+  o.xt=o.cats.map(function(c,i){return {v:i+.5,l:c}});
+  var fr=frame(o),s=fr.s,i,j,base=fr.y0;
+  function rect(x0,x1,v0,v1,col,tt){
+    var ya=fr.y(Math.max(v0,v1)),yb=fr.y(Math.min(v0,v1));
+    return '<rect x="'+x0+'" y="'+ya+'" width="'+(x1-x0)+'" height="'+Math.max(0,yb-ya)+'" style="fill:'+col+'"><title>'+esc(tt)+'</title></rect>';
+  }
+  for(i=0;i<n;i++){
+    var xa=fr.x(i+.16),xb=fr.x(i+.84);
+    if(o.stack){
+      var cur=base;
+      o.stack.forEach(function(st){var v=st.vals[i];s+=rect(xa,xb,cur,cur+v,st.color,st.label+": "+k1(v));cur+=v});
+      s+='<text x="'+((xa+xb)/2)+'" y="'+(fr.y(cur)-5)+'" text-anchor="middle" style="fill:var(--ink)">'+k1(o.tot?o.tot[i]:cur)+'</text>';
+    } else {
+      var w=(xb-xa)/o.sets.length;
+      o.sets.forEach(function(st,j){
+        var v=st.vals[i]; if(v===null||v===undefined)return;
+        s+=rect(xa+j*w,xa+(j+1)*w-1,base,Math.max(base,v),st.color,(st.label||"")+" "+o.cats[i].replace(/\n/g," ")+": "+k1(v));
+        s+='<text x="'+(xa+(j+.5)*w)+'" y="'+(fr.y(Math.max(base,v))-5)+'" text-anchor="middle" style="fill:var(--ink)">'+(o.sets.length>1?k1(v).replace("k",""):k1(v))+'</text>';
+      });
+    }
+    if(o.marks&&o.marks[i]!==null&&o.marks[i]!==undefined){
+      var ym=fr.y(Math.min(fr.y1,o.marks[i]));
+      s+='<line x1="'+(xa-5)+'" x2="'+(xb+5)+'" y1="'+ym+'" y2="'+ym+'" style="stroke:var(--ink)" stroke-width="2.4"><title>weak case: '+k1(o.marks[i])+'</title></line>';
+    }
+  }
+  $(id).innerHTML=s+"</svg>";
+}
+/* horizontal ranges: rows [{label, lo, hi, color, mark, txt}] */
+function rangeChart(id,o){
+  var two=!!$(id).closest(".two"),rh=o.rh||46,W=two?440:640,L=14,R=o.r||150,T=20,Bm=40,H=T+o.rows.length*rh+Bm;
+  var xt=nice(o.x[0],o.x[1],6),x0=xt[0],x1=xt[xt.length-1];
+  function X(v){return L+(v-x0)/(x1-x0)*(W-L-R)}
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.aria||"chart")+'">';
+  xt.forEach(function(v){
+    s+='<line class="gr" x1="'+X(v)+'" x2="'+X(v)+'" y1="'+T+'" y2="'+(H-Bm)+'"/><text x="'+X(v)+'" y="'+(H-Bm+16)+'" text-anchor="middle">'+cf(v)+'</text>';
+  });
+  (o.vrefs||[]).forEach(function(r){
+    o.rows.forEach(function(_,i){s+='<line class="ref" x1="'+X(r.x)+'" x2="'+X(r.x)+'" y1="'+(T+i*rh+18)+'" y2="'+(T+i*rh+39)+'"/>'});
+    s+='<text x="'+(X(r.x)+(r.left?-4:4))+'" y="'+(T-6)+'" text-anchor="'+(r.left?"end":"start")+'">'+esc(r.label)+'</text>';
+  });
+  o.rows.forEach(function(r,i){
+    var y=T+i*rh;
+    s+='<text x="'+L+'" y="'+(y+15)+'" style="fill:var(--ink)">'+esc(r.label)+'</text>';
+    var a=X(r.lo),b=X(r.hi);
+    s+='<rect x="'+a+'" y="'+(y+21)+'" width="'+Math.max(1.5,b-a)+'" height="15" style="fill:'+r.color+'"><title>'+esc(r.label+": "+r.txt)+'</title></rect>';
+    var tx=b;
+    if(r.mark!==undefined&&r.mark!==null){s+='<line x1="'+X(r.mark)+'" x2="'+X(r.mark)+'" y1="'+(y+17)+'" y2="'+(y+40)+'" style="stroke:var(--ink)" stroke-width="2.4"><title>weak case: '+k1(r.mark)+'</title></line>';tx=Math.max(b,X(r.mark))}
+    s+='<text x="'+(tx+7)+'" y="'+(y+33)+'" style="fill:var(--ink)">'+esc(r.txt)+'</text>';
+  });
+  s+='<line class="ax" x1="'+L+'" x2="'+(W-R)+'" y1="'+(H-Bm)+'" y2="'+(H-Bm)+'"/>';
+  if(o.xl)s+='<text x="'+((L+W-R)/2)+'" y="'+(H-6)+'" text-anchor="middle">'+esc(o.xl)+'</text>';
+  $(id).innerHTML=s+"</svg>";
+}
+function range(a,b,st){var r=[],v;for(v=a;v<=b+1e-9;v+=st)r.push(+v.toFixed(6));return r}
+function ord(n){return n+(n===1?"st":n===2?"nd":n===3?"rd":"th")}
+
+/* ---------- plates ---------- */
+function hero(id,items){$(id).innerHTML=items.map(function(i){return '<div><div class="k">'+esc(i.k)+'</div><div class="v num">'+esc(i.v)+'</div><div class="s">'+esc(i.s||"")+'</div></div>'}).join("")}
+
+function pEstimate(m){
+  var s=scenario(m),rep=repeat(m),unit=P.unit||"units";
+  hero("est-hero",[
+    {k:"Cost of the project",v:fmt(s.C,m),s:unit+", with customer changes"},
+    {k:"Cost of uniqueness",v:fmt(s.C-rep,m),s:"above a repeat at "+fmt(rep,m)+" ("+pc((s.C-rep)/rep)+")"},
+    {k:"Experience available",v:s.E.toFixed(2),s:isFinite(estar(m))?"core cost reached above "+estar(m).toFixed(2):"core cost not reached at this strength"},
+    {k:"Weak case, λ = 0",v:fmt(s.Cweak,m),s:"the same scenario if experience reduces only the penalty"}]);
+  var parts=[["Core cost",m.B,C.core],["Novelty penalty",s.h-m.B,C.s2],["Customer changes",s.C-s.h,C.s1]],tot=s.C;
+  $("est-stack").innerHTML='<div class="stack" role="img" aria-label="Cost breakdown">'+parts.map(function(p){
+    return '<span style="width:'+(p[1]/tot*100)+'%;background:'+p[2]+'" title="'+p[0]+": "+fmt(p[1],m)+'"></span>'}).join("")+'</div>';
+  $("est-leg").innerHTML=parts.map(function(p){return '<span><i class="sq" style="background:'+p[2]+'"></i>'+p[0]+" "+fmt(p[1],m)+'</span>'}).join("")+
+    '<span>novelty penalty left '+pc(s.u)+' · customer changes '+pc(s.c)+'</span>';
+  var rows=[["Similar projects completed",P.N+" × "+m.rho.toFixed(2),s.E0],
+    ["Time without related work",P.g+" months, "+Math.max(0,P.g-m.g0)+" beyond g₀",s.E1],
+    ["Unrelated project in between",P.tau+" months at "+m.d.toFixed(2)+" a month",s.E2],
+    ["People and partners leaving",P.q+"% of the experience",s.E3],
+    ["Digital tool",P.t+" of "+s.T+" months, + "+s.tool.toFixed(2),s.E]];
+  $("est-tab").innerHTML='<thead><tr><th>Step</th><th>Input</th><th class="r">Stock after</th></tr></thead><tbody>'+rows.map(function(r){
+    return '<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td><td class="r num mono">'+r[2].toFixed(2)+'</td></tr>'}).join("")+'</tbody>';
+  $("est-note").textContent=(P.phi>0?"Reuse of an earlier design lowers the novelty penalty from "+pc(m.f)+" to "+pc(s.f)+". ":"")+
+    (P.ai?"With the AI assistant, half of each loss is retained and the tool is fully in use after "+s.T+" months. ":"")+
+    "A design new to a firm with no experience costs "+fmt(cost(0,m),m)+" "+unit+"; a repeat costs "+fmt(rep,m)+".";
+}
+
+function p21(m){
+  var ns=range(1,8,1),fine=range(1,8,.1);
+  function curve(S,xs){var b=Math.log(1-S)/Math.LN2;return xs.map(function(n){return [n,m.B*Math.pow(n,b)]})}
+  var main=curve(m.S,ns);
+  lineChart("c-21",{aria:"Hours of each unit in a series",x:[.7,8.3],xt:ns,xl:"Unit number n",yl:P.unit+" of unit n",
+    series:[{pts:curve(.03,fine),color:C.gr,dash:1,w:1.4,label:"S = 3%"},{pts:curve(.10,fine),color:C.gr,dash:1,w:1.4,label:"S = 10%"},
+            {pts:curve(m.S,fine),color:C.s1},{pts:main,color:C.s1,dots:1,lab:[0,3,7],w:0,label:"unit"}]});
+  legend("l-21",[{color:C.s1,label:"S = "+pc(m.S)},{color:C.gr,dash:1,label:"S = 3% and 10%"}]);
+  $("n-21").textContent="With the first unit at "+fmt(m.B,m)+" "+P.unit+": second "+fmt(main[1][1],m)+", third "+fmt(main[2][1],m)+", fourth "+fmt(main[3][1],m)+
+    ". The second unit saves "+fmt(main[0][1]-main[1][1],m)+", the eighth "+fmt(main[6][1]-main[7][1],m)+". b = "+m.b.toFixed(4)+".";
+}
+function p22(m){
+  var ns=range(1,8,1),fine=range(1,8,.1),o1={lam:1};
+  var fl=function(n){return m.B*(1+u(n-1,m,o1))},raw=function(n){return m.B*(1+m.f)*Math.pow(n,m.b)};
+  var lowf=function(n){return m.B*(1+u(n-1,m,{lam:1,f:.025}))};
+  lineChart("c-22",{aria:"Floor at the core cost",x:[.7,8.3],xt:ns,xl:"Unit number n",yl:P.unit+" of unit n",
+    hrefs:[{y:m.B,label:"core cost B",below:1,fit:1}],
+    series:[{pts:fine.map(function(n){return [n,raw(n)]}),color:C.gr,dash:1,w:1.4},
+            {pts:ns.map(function(n){return [n,lowf(n)]}),color:C.s3,dots:1,label:"f = 2.5%"},
+            {pts:ns.map(function(n){return [n,fl(n)]}),color:C.s1,dots:1,lab:[0,1,2],label:"f = "+pc(m.f)}]});
+  legend("l-22",[{color:C.s1,label:"new design, f = "+pc(m.f)},{color:C.s3,label:"class similar to an earlier one, f = 2.5%"},{color:C.gr,dash:1,label:"Equation of Step 2.1 without a floor"}]);
+  var es=estar({lam:1,b:m.b,f:m.f});
+  $("n-22").textContent="First unit "+fmt(fl(1),m)+", second "+fmt(fl(2),m)+", third "+fmt(fl(3),m)+". "+
+    (isFinite(es)?"The core cost is reached at a stock of "+es.toFixed(2)+", that is by the "+ord(Math.ceil(es-1e-9)+1)+" unit; Craggs et al. report about the fourth.":"With no learning the core cost is never reached.")+
+    " This plate is drawn at full strength, λ = 1.";
+}
+function p23(m){
+  var k,idS=[[0,0]],simS=[[0,0]],idH=[],simH=[];
+  for(k=1;k<=6;k++){idS.push([12*k,k]);simS.push([12*k,k*m.rho])}
+  idS.push([78,6]);simS.push([78,6*m.rho]);
+  for(k=1;k<=8;k++){idH.push([k,hours(k-1,m)]);simH.push([k,hours((k-1)*m.rho,m)])}
+  var es=estar(m);
+  lineChart("c-23a",{aria:"Experience stock over time",h:320,x:[0,78],xt:range(0,72,12),xl:"Months, one project every 12",yl:"Experience stock E",ymin:0,
+    hrefs:isFinite(es)?[{y:es,label:"core cost reached, "+es.toFixed(2),fit:es<8,start:1}]:[],
+    series:[{pts:idS,color:C.gr,step:1},{pts:simS,color:C.s1,step:1}]});
+  legend("l-23a",[{color:C.gr,label:"identical projects (similarity 1)"},{color:C.s1,label:"similar projects (similarity "+m.rho.toFixed(2)+")"}]);
+  lineChart("c-23b",{aria:"Hours of each project",h:320,x:[.7,8.3],xt:range(1,8,1),xl:"Project",yl:P.unit+" of each project",
+    hrefs:[{y:m.B,fit:1}],
+    series:[{pts:idH,color:C.gr,dots:1,label:"identical"},{pts:simH,color:C.s1,dots:1,lab:[0,1,2,3],label:"similar"}]});
+  legend("l-23b",[{color:C.gr,label:"identical"},{color:C.s1,label:"similar ("+m.rho.toFixed(2)+")"}]);
+  var first=0;for(k=0;k<simH.length;k++){if(simH[k][1]<=m.B*(1+1e-9)){first=k+1;break}}
+  $("n-23").textContent="Similar projects: "+simH.slice(0,4).map(function(p){return fmt(p[1],m)}).join(", ")+" "+P.unit+
+    (first?"; the core cost is reached at the "+ord(first)+" project.":"; the core cost is not reached within eight projects.")+
+    " With customer changes: "+[0,1,2,3,4].map(function(k){return fmt(cost(k*m.rho,m),m)}).join(", ")+".";
+}
+function p24(m){
+  var E5=5*m.rho,ts=range(0,36,.5),q=.5;
+  var sA=ts.map(function(t){return [t,idle(E5,t,m)]}),sB=ts.map(function(t){return [t,E5*Math.pow(m.d,t)]}),sC=[[0,E5]].concat(ts.map(function(t){return [t,idle(E5*(1-q),t,m)]}));
+  var H=function(s){return s.map(function(p){return [p[0],hours(p[1],m)]})};
+  var es=estar(m);
+  lineChart("c-24a",{aria:"Experience stock after three kinds of loss",h:320,x:[0,36],xt:range(0,36,6),xl:"Months after the fifth similar project",yl:"Experience stock E",ymin:0,
+    hrefs:isFinite(es)&&es<E5*1.3?[{y:es}]:[],
+    series:[{pts:sA,color:C.s1},{pts:sB,color:C.s2},{pts:sC,color:C.s3}]});
+  var li=[{color:C.s1,label:"2.4 time without related work"},{color:C.s2,label:"2.5 an unrelated project in between"},{color:C.s3,label:"2.6 half of the experience leaves"}];
+  legend("l-24a",li.concat(isFinite(es)&&es<E5*1.3?[{color:C.gr,dash:1,label:"core cost reached above "+es.toFixed(2)}]:[]));
+  lineChart("c-24b",{aria:"Hours of the next similar project",h:320,x:[0,36],xt:range(0,36,6),xl:"Months after the fifth similar project",yl:P.unit+" of the next similar project",
+    hrefs:[{y:hours(0,m),label:"first-project level",fit:1},{y:m.B,fit:1}],
+    series:[{pts:H(sA),color:C.s1},{pts:H(sB),color:C.s2},{pts:H(sC.slice(1)),color:C.s3}]});
+  legend("l-24b",li);
+  var e36=idle(E5,36,m),e12=E5*Math.pow(m.d,12),thr=isFinite(es)&&m.m>0&&E5>es?m.g0+(E5-es)/m.m:null;
+  $("n-24").textContent="Stock after five similar projects: "+E5.toFixed(1)+". "+
+    "2.4: after 36 months the stock is "+e36.toFixed(2)+" and the next project takes "+fmt(hours(e36,m),m)+" "+P.unit+" ("+fmt(cost(e36,m),m)+" with changes)"+
+    (thr!==null?"; the first "+Math.round(thr)+" months cost nothing":"")+". "+
+    "2.5: a 12-month unrelated project leaves "+e12.toFixed(3)+", and the next project takes "+fmt(hours(e12,m),m)+" ("+fmt(cost(e12,m),m)+"). "+
+    "2.6: one person from each department of five, a fifth of the experience, leaves "+(E5*.8).toFixed(1)+" → "+fmt(cost(E5*.8,m),m)+"; a department with a third leaves "+(E5*2/3).toFixed(1)+" → "+fmt(cost(E5*2/3,m),m)+"; half leaves "+(E5/2).toFixed(1)+" → "+fmt(cost(E5/2,m),m)+".";
+}
+function p27(m){
+  var E5=5*m.rho,ts=range(0,36,.5),T=m.T;
+  var ramp=function(t){return m.emax*Math.min(1,t/T)},fall=function(t){return E5*Math.pow(m.d,Math.min(t,12))};
+  lineChart("c-27a",{aria:"A digital tool as a ramp",h:320,x:[0,36],xt:range(0,36,6),xl:"Months after the tool is introduced",yl:"Experience available",ymin:0,
+    series:[{pts:ts.map(function(t){return [t,ramp(t)]}),color:C.s3},{pts:ts.map(function(t){return [t,fall(t)]}),color:C.s2,dash:1},{pts:ts.map(function(t){return [t,fall(t)+ramp(t)]}),color:C.s2}]});
+  legend("l-27a",[{color:C.s3,label:"firm with no experience: tool only"},{color:C.s2,dash:1,label:"unrelated project, 12 months"},{color:C.s2,label:"the same, with the tool"}]);
+  var o={lam:m.lam,f:m.f*.5},v=[hours(0,m),hours(0,m,o),hours(m.emax,m),hours(m.emax,m,o)];
+  barChart("c-27b",{aria:"Hours of a project new to the firm",h:320,cats:["First of\na new type","Earlier design\nreused","Tool fully\nin use","Both"],y:[m.B,Math.max(v[0],m.B*1.01)],yl:P.unit+" of the project",b:54,
+    sets:[{color:C.s1,vals:v}]});
+  $("l-27b").innerHTML='<span>half of the design reused (φ = 0.5); tool gives e_max = '+m.emax.toFixed(1)+'</span>';
+  $("n-27").textContent="With customer changes: first "+fmt(cost(0,m),m)+", earlier design reused "+fmt(cost(0,m,o),m)+", tool fully in use "+fmt(cost(m.emax,m),m)+", both "+fmt(cost(m.emax,m,o),m)+
+    ". With the tool half in use: "+fmt(cost(m.emax*.5,m),m)+".";
+}
+function p28(m){
+  var k,cats=[],core=[],pen=[],chg=[],tot=[];
+  for(k=0;k<5;k++){var E=k*m.rho,h=hours(E,m),c=cost(E,m);cats.push(ord(k+1));core.push(0);pen.push(h-m.B);chg.push(c-h);tot.push(c)}
+  var lo=m.B*.9;
+  barChart("c-28a",{aria:"Changes fall with repetition",h:320,cats:cats,y:[lo,Math.max.apply(null,tot)*1.02],yl:"Cost of the project, "+P.unit,xl:"Similar project (similarity "+m.rho.toFixed(2)+")",
+    stack:[{color:C.core,label:"core",vals:core.map(function(){return m.B-lo})},{color:C.s2,label:"novelty penalty",vals:pen},{color:C.s1,label:"customer changes",vals:chg}],tot:tot});
+  legend("l-28a",[{sq:1,color:C.core,label:"core"},{sq:1,color:C.s2,label:"novelty penalty"},{sq:1,color:C.s1,label:"customer changes"}]);
+  var E5=5*m.rho,Ei=E5*Math.pow(m.d,12),un=[],it=[],hid=0,hid2=0;
+  for(k=0;k<10;k++){
+    var cu=cost(k*m.rho,m),ci=k<5?cu:cost(Ei+(k-5)*m.rho,m);
+    un.push([k+1,cu]);it.push([k+1,ci]);if(k>=5){hid+=ci-cu;if(k<7)hid2+=ci-cu}
+  }
+  lineChart("c-28b",{aria:"Hidden cost of an unrelated project",h:320,x:[.5,10.5],xt:range(1,10,1),xl:"Project in the line",yl:"Cost of the project, "+P.unit,
+    bands:[[5.35,5.65]],hrefs:[{y:cost(0,m),label:"first-project level",fit:1}],
+    series:[{pts:un,color:C.gr,dots:1,label:"uninterrupted"},{pts:it,color:C.s2,dots:1,label:"interrupted"}]});
+  legend("l-28b",[{color:C.s2,label:"with a 12-month unrelated project after the fifth"},{color:C.gr,label:"line uninterrupted"}]);
+  var vis=cost(0,m)-repeat(m);
+  hero("h28-hero",[{k:"Visible cost",v:fmt(vis,m),s:"a first project above a repeat"},
+    {k:"Hidden cost",v:fmt(hid,m),s:"extra cost on the five projects that follow"},
+    {k:"Hidden / visible",v:vis>0?(hid/vis).toFixed(1)+"×":"–",s:"first two projects alone: "+fmt(hid2,m)}]);
+  $("n-28").textContent="The five similar projects cost "+tot.map(function(v){return fmt(v,m)}).join(", ")+" "+P.unit+". After the unrelated project the next ones cost "+
+    it.slice(5,9).map(function(p){return fmt(p[1],m)}).join(", ")+". The hidden cost depends on the rate of loss d ("+m.d.toFixed(2)+" a month here) and on the strength λ.";
+}
+function p29(m){
+  var Es=range(0,4,.05),s=scenario(m);
+  var cv=function(l){return Es.map(function(E){return [E,cost(E,m,{lam:l})]})};
+  var ser=[{pts:cv(0),color:C.gr,dash:1},{pts:cv(.5),color:C.s3},{pts:cv(1),color:C.s1}];
+  var custom=m.lam!==0&&m.lam!==.5&&m.lam!==1; if(custom)ser.push({pts:cv(m.lam),color:C.s2});
+  var Ex=Math.min(4,s.E);
+  ser.push({pts:[[Ex,cost(Ex,m)]],color:C.ink,dots:1,lab:true,w:0,label:"scenario"});
+  lineChart("c-29",{aria:"Cost against experience at three strengths",x:[0,4],xt:range(0,4,.5),xl:"Experience available E",yl:"Cost of the project, "+P.unit,
+    hrefs:[{y:repeat(m),label:"a repeat",below:1,fit:1}],series:ser});
+  legend("l-29",[{color:C.s1,label:"λ = 1, full effect"},{color:C.s3,label:"λ = 0.5"},{color:C.gr,dash:1,label:"λ = 0, weak case"}].concat(custom?[{color:C.s2,label:"λ = "+m.lam.toFixed(2)}]:[]));
+  var E5=5*m.rho,o0={lam:0},o1={lam:1};
+  $("n-29").textContent="Weak case, similar projects: "+[0,1,2,3].map(function(k){return fmt(cost(k*m.rho,m,o0),m)}).join(", ")+
+    ". Experience of five similar projects is worth "+fmt(cost(0,m,o1)-cost(E5,m,o1),m)+" "+P.unit+" at full strength and "+fmt(cost(0,m,o0)-cost(E5,m,o0),m)+" in the weak case. The dot is the scenario of the controls.";
+}
+function pFirmX(m){
+  var q=third(+$("fxq").value)/100; $("o-fxq").textContent=Math.round(q*100)+"%";
+  var pJ=fxPath(FXJ,1,q,0,m),pM=fxPath(FXM,1,q,0,m),nJ=last(pJ),nM=last(pM),nJ0=last(fxPath(FXJ,1,0,0,m)),nM0=last(fxPath(FXM,1,0,0,m));
+  var yr=function(t){return 2024-(FXBID-t)/12},es=estar(m),w0={lam:0};
+  var toY=function(p){return p.map(function(r){return [yr(r[0]),r[1]]})};
+  lineChart("c-fx1",{aria:"Experience stock of Firm X",h:300,x:[yr(0),2024.4],xt:range(2015,2024,1),xl:"Year",yl:"Experience stock E",ymin:0,
+    bands:[[yr(0),yr(24)],[yr(35),yr(59)],[yr(79),yr(103)]],
+    hrefs:isFinite(es)&&es<4?[{y:es,label:"core cost reached above "+es.toFixed(2),fit:1,start:1}]:[],
+    vrefs:[{x:yr(FXLEAVE),label:"department leaves",left:1},{x:2024,label:"bid"}],
+    notes:[{x:yr(12),y:.06,t:"supply ×2",a:"middle"},{x:yr(47),y:.06,t:"cruise ×2",a:"middle"},{x:yr(91),y:.06,t:"wind ×2",a:"middle"}],
+    series:[{pts:toY(pM),color:C.s1,dash:1},{pts:toY(pJ),color:C.s1}]});
+  legend("l-fx1",[{color:C.s1,label:"similarity as judged (0.3, 0.5, 0.9): "+nJ.toFixed(2)+" at the bid"},{color:C.s1,dash:1,label:"as measured (0.25, 0.35, 0.70): "+nM.toFixed(2)}]);
+  var bv=[repeat(m),cost(nJ,m),cost(nM,m),cost(0,m)];
+  barChart("c-fx2",{aria:"Bid of Firm X",h:320,b:54,cats:["A repeat","Stock as\njudged","Stock as\nmeasured","No\nexperience"],y:[m.B,cost(0,m)*1.01],yl:"Cost of the bid, "+P.unit,
+    sets:[{color:C.s1,vals:bv}],marks:[null,cost(nJ,m,w0),cost(nM,m,w0),null]});
+  $("l-fx2").innerHTML='<span><i style="border-color:var(--ink)"></i>weak case</span>';
+  function opt(n0){var rel=n0+.7,unr=n0*Math.pow(m.d,12)+.2,idl=Math.max(0,n0-m.m*12);return [cost(rel,m),cost(unr,m),cost(idl,m)]}
+  var oJ=opt(nJ),oM=opt(nM);
+  barChart("c-fx3",{aria:"Three ways to spend the next year",h:320,b:54,cats:["Related\nproject","Unrelated project,\n12 months","No project"],y:[m.B,Math.max(oJ[1],oM[1],oJ[2],oM[2])*1.01],yl:"Cost of the bid a year later, "+P.unit,
+    sets:[{color:C.s1,label:"judged",vals:oJ},{color:C.s3,label:"measured",vals:oM}]});
+  legend("l-fx3",[{sq:1,color:C.s1,label:"stock as judged"},{sq:1,color:C.s3,label:"stock as measured"}]);
+  $("n-fx").textContent="Bid at the judged stock "+fmt(bv[1],m)+" "+P.unit+", at the measured stock "+fmt(bv[2],m)+" (weak case "+fmt(cost(nJ,m,w0),m)+" and "+fmt(cost(nM,m,w0),m)+
+    "). Had the department stayed, the stocks would be "+nJ0.toFixed(2)+" and "+nM0.toFixed(2)+" and the bids "+fmt(cost(nJ0,m),m)+" and "+fmt(cost(nM0,m),m)+
+    ". Taking the unrelated project instead of a related one has a hidden cost of "+fmt(oJ[1]-oJ[0],m)+" (judged) or "+fmt(oM[1]-oM[0],m)+" (measured) on the next bid; a year with no project "+fmt(oJ[2]-oJ[0],m)+" or "+fmt(oM[2]-oM[0],m)+".";
+  /* narrowing */
+  var lamAll=range(0,1,.05),lamFit=range(.35,.65,.05),nlo=last(fxPath(FXJ,.7,q,0,m)),nhi=last(fxPath(FXJ,1.3,q,0,m));
+  function iv(ns,ls,o){var lo=Infinity,hi=-Infinity;ns.forEach(function(n){ls.forEach(function(l){var oo={lam:l};if(o){oo.f=o.f;oo.c1=o.c1}var v=cost(n,m,oo);lo=Math.min(lo,v);hi=Math.max(hi,v)})});return [lo,hi]}
+  var nsJ=[],i;for(i=0;i<=12;i++)nsJ.push(nlo+(nhi-nlo)*i/12);
+  var act={f:m.f*.5,c1:Math.min(m.c1,.086)};
+  var I=[iv(nsJ,lamAll),iv([nM],lamAll),iv([nM],lamAll,act),iv([nM],lamFit,act)];
+  var labs=["Today: similarity judged (±30%), strength of the learning effect unknown","Step 1, measure: similarity and gaps from the records","Step 2, act: start from the closest earlier design, control changes","Step 3, learn: strength fitted on the firm's own projects (±0.15)"];
+  var cols=[C.gr,C.s1,C.s3,C.s2];
+  rangeChart("c-fx4",{aria:"Interval of the estimate, step by step",x:[repeat(m),cost(0,m)],r:200,
+    vrefs:[{x:repeat(m),label:"repeat"},{x:cost(0,m),label:"no experience",left:1}],xl:"Estimated cost of Firm X's bid, "+P.unit,
+    rows:I.map(function(v,i){return {label:labs[i],lo:v[0],hi:v[1],color:cols[i],txt:k1(v[0])+" – "+k1(v[1])+"  (width "+k1(v[1]-v[0])+")"}})});
+  $("n-fx4").textContent="Step 2 halves the novelty penalty and brings first-project changes to "+pc(act.c1)+". Step 3 assumes ten of the firm's own projects have narrowed λ to 0.5 ± 0.15; the centre of that interval is not known in advance.";
+}
+function p52(m){
+  var rep=repeat(m),w=function(o){var r={lam:0};if(o){if(o.f!==undefined)r.f=o.f;if(o.c1!==undefined)r.c1=o.c1}return r};
+  var cf2=Math.min(m.c1,.086);
+  var lev=[["None",0,null,C.gr],["Reuse of an earlier design (penalty "+pc(m.f,0)+" → "+pc(m.f/2,0)+")",0,{f:m.f/2},C.s1],
+    ["Frozen specification (changes "+pc(m.c1)+" → "+pc(cf2)+")",0,{c1:cf2},C.s1],["Tool fully in use",m.emax,null,C.s3],["All three",m.emax,{f:m.f/2,c1:cf2},C.s2]];
+  rangeChart("c-52a",{aria:"Levers for Firm Y",x:[rep,cost(0,m)],r:70,xl:"Cost of Firm Y's bid, "+P.unit,
+    rows:lev.map(function(l){var v=cost(l[1],m,l[2]||undefined);return {label:l[0],lo:rep,hi:v,color:l[3],mark:cost(l[1],m,w(l[2])),txt:k1(v)}})});
+  var E5=5*m.rho,Ei=E5*Math.pow(m.d,12),pM=last(fxPath(FXM,1,1/3,0,m)),pMa=last(fxPath(FXM,1,1/3,.5,m));
+  var ppl=[cost(m.emax*Math.min(1,12/m.T),m),cost(Ei,m),cost(pM,m)],ast=[cost(m.emax*Math.min(1,12/Math.min(m.T,6)),m),cost(E5-(E5-Ei)*.5,m),cost(pMa,m)];
+  barChart("c-52b",{aria:"The assistant as a scenario",h:330,b:66,cats:["Firm Y's bid,\na year after\nthe tool","Next project\nafter an unrelated\nproject","Firm X's bid\nafter the\ndeparture"],
+    y:[m.B,Math.max.apply(null,ppl.concat(ast))*1.012],yl:"Cost, "+P.unit,hrefs:[{y:rep}],sets:[{color:C.gr,label:"people",vals:ppl},{color:C.s3,label:"assistant",vals:ast}]});
+  legend("l-52b",[{sq:1,color:C.gr,label:"tool used by people"},{sq:1,color:C.s3,label:"through an AI assistant"}]);
+  var hid=function(E){var s=0,k;for(k=0;k<5;k++)s+=cost(E+k*m.rho,m)-cost(E5+k*m.rho,m);return s};
+  $("n-52").textContent="Black marks give the weak case. Reuse is worth "+fmt(cost(0,m)-cost(0,m,{f:m.f/2}),m)+" "+P.unit+" and a frozen specification "+fmt(cost(0,m)-cost(0,m,{c1:cf2}),m)+
+    ", at any strength of the learning effect; the tool is worth "+fmt(cost(0,m)-cost(m.emax,m),m)+" at full strength and "+fmt(cost(0,m,{lam:0})-cost(m.emax,m,{lam:0}),m)+
+    " in the weak case. With the assistant, the hidden cost of the unrelated project of Step 2.8 falls from "+fmt(hid(Ei),m)+" to "+fmt(hid(E5-(E5-Ei)*.5),m)+".";
+}
+
+/* ---------- wiring ---------- */
+var OUT={B:function(v,m){return fmt(v,m)+" "+P.unit},f:function(v){return (+v).toFixed(1)+"%"},S:function(v,m){return (+v).toFixed(1)+"%  b = "+m.b.toFixed(4)},
+  lam:function(v){return (v/100).toFixed(2)},N:function(v){return v},rho:function(v){return (v/100).toFixed(2)},g:function(v){return v+" mo"},g0:function(v){return v+" mo"},
+  m:function(v){return (+v).toFixed(2)},tau:function(v){return v+" mo"},d:function(v){return (v/100).toFixed(2)},q:function(v){return v+"%"},phi:function(v){return v+"%"},
+  t:function(v){return v+" mo"},emax:function(v){return (+v).toFixed(1)},T:function(v){return v+" mo"},c1:function(v){return (+v).toFixed(1)+"%"},cr:function(v){return (+v).toFixed(1)+"%"}};
+function read(){
+  var els=document.querySelectorAll("[data-k]"),i,el;
+  for(i=0;i<els.length;i++){el=els[i];P[el.dataset.k]=el.type==="checkbox"?el.checked:el.type==="text"?el.value:+el.value}
+  if(!(P.B>0))P.B=1;
+}
+function render(){
+  read(); var m=M(),k;
+  for(k in OUT){var o=$("o-"+k);if(o)o.textContent=OUT[k](P[k],m)}
+  var chips=document.querySelectorAll(".chips[data-for] .chip"),i;
+  for(i=0;i<chips.length;i++){var key=chips[i].parentNode.dataset.for;chips[i].setAttribute("aria-pressed",String(Math.abs(+chips[i].dataset.v-P[key])<1e-9))}
+  [pEstimate,p21,p22,p23,p24,p27,p28,p29,pFirmX,p52].forEach(function(fn){try{fn(m)}catch(e){console.error(fn.name,e)}});
+}
+document.addEventListener("input",function(e){if(e.target.matches("[data-k],#fxq"))render()});
+document.addEventListener("click",function(e){
+  var c=e.target.closest(".chip"); if(!c)return;
+  if(c.dataset.p){
+    var base={N:0,g:0,tau:0,q:0,phi:0,t:0,lam:100},p=JSON.parse(c.dataset.p),k;
+    for(k in p)base[k]=p[k];
+    for(k in base)$(k).value=base[k];
+    $("ai").checked=false; render(); return;
+  }
+  var key=c.parentNode.dataset.for; if(key){$(key).value=c.dataset.v;render()}
 });
-document.querySelectorAll('input[name="interp"]').forEach(function(el){
-  el.addEventListener("change",function(){S.interp=el.value;renderSeries();});
-});
-var rt; var lastW=0;
-function onResize(){var w=document.querySelector(".wrap").clientWidth; if(w===lastW){return;} lastW=w; clearTimeout(rt); rt=setTimeout(function(){renderSeries();renderGap();renderInterrupt();renderMore();renderTool();renderHist();},80);}
-if(window.ResizeObserver){new ResizeObserver(onResize).observe(document.querySelector(".wrap"));}else{window.addEventListener("resize",onResize);}
-window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){renderAll();});
-window.__model={calc:calc,S:S,bOf:bOf};
-wireHist();
-renderAll();
+render();
+window.__pbf={P:P,M:M,cost:cost,hours:hours,scenario:scenario,fxPath:fxPath,FXJ:FXJ,FXM:FXM};
 })();
 </script>

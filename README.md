@@ -8,48 +8,57 @@ This is the interactive companion of the paper
 
 > Yilmaz, G., Gaspar, H.M. *Measuring the cost of uniqueness: shipbuilding learning evidence applied to project-based firms.* Preprint, NTNU Ålesund, 2026.
 
-Every number in the paper's tables and figures can be reproduced on the page, and a firm can enter its own values.
+The page follows the paper step by step. The worked example of Section 2 (core cost 100,000 labour hours), the detailed case of Firm X (Section 3) and the tool and AI-assistant scenario (Section 5.2) are reproduced with the base values; a firm can enter its own values. The simulation experiments of Section 4 are not part of the page.
 
-## What the model does
+## The model
 
-A unique project costs the repeat cost of the same work plus the cost of uniqueness. The cost of uniqueness has a visible part — the novelty premium and the change orders of the project itself — and a hidden part, the experience the project takes from the line of work the firm is on (Erichsen's observation that an odd contract in a series of ships sends the next ship almost back to first-ship cost).
+The model starts from Erichsen's learning effect for ship series, adds a floor at the core cost and a novelty penalty, and then one factor at a time. Each factor moves the experience stock `E` with its own shape.
 
 ```
-C = B(1 + c) + U,   U = B · u(n) · (1 + c)
-u(n) = max[0, (λ + f)(1 + n)^b − λ],   b = log2(1 − S)
-E(k+1) = max(0, E(k) + ρ(k) − m · max(0, g(k) − g0))      gap between related projects
-E(k+1) = E(k) · d^τ + ρ(Z),  ρ(Z) ≈ 0                      unrelated contract of τ months
+y_n = a · n^b,   b = log2(1 − S)                      Erichsen's learning effect (2.1)
+h(E) = B · (1 + u(E)),   u(E) = max[0, (λ + f)(1 + E)^b − λ]   floor and novelty penalty (2.2)
+E ← E + ρ                                             similar project completed: step up (2.3)
+E ← max(0, E − m · max(0, g − g0))                    time without related work: slow fade (2.4)
+E ← E · d^τ                                           unrelated project of τ months: fast fall (2.5)
+E ← E · (1 − q)                                       people and partners leaving: drop (2.6)
+f ← (1 − φ) · f,   E_available = E + e_max · min(1, t/T)   reuse; digital tool as a ramp (2.7)
+C = B · (1 + u) · (1 + c(u)),   c(u) = c_r + (c_1 − c_r) · min(1, u/f)   customer changes (2.8)
 ```
 
-- `B` core cost, `f` novelty premium, `c` change orders, `S` learning per doubling, `n` effective experience.
-- `λ` is the share of core work a new design makes learnable again: 0 = Form A (only the premium is learnable), 1 = Form B (the whole design cost follows the curve to the floor).
-- `m`, `g0` idle forgetting; `d` monthly retention while an unrelated contract runs (0.75 from Argote et al., 1990, reproduces Erichsen).
+- `B` core cost, `f` novelty penalty, `S` learning rate per doubling, `ρ` similarity of an earlier project to the new one.
+- `λ` is the strength of the learning effect (2.9): 1 is the base case, in which experience lowers the whole cost of a new design as in a ship series; 0 is the weak case, in which it reduces only the novelty penalty.
+- Base values: `S` = 5.7% (`b` = −0.0846, Erichsen 1994), `f` = 10% (Craggs et al. 2004), `d` = 0.75 a month (Argote et al. 1990), `c_1` = 12.3% and `c_r` = 3.0% (Coleman et al. 2007); `m` = 0.05, `g0` = 6 months, `e_max` = 1 and `T` = 24 months are assumptions.
+- The visible cost of uniqueness is what a project costs above a repeat. The hidden cost is what the following projects cost more because experience was lost.
 
 ## The page
 
-Open `index.html`. No server, build step or dependencies; it works offline. Every input is a control; every plate updates at once.
+Open `index.html`. No server or build step; the page is one file (fonts are loaded from Google Fonts when online). Every input is a control and every plate recalculates at once.
 
 | Plate | Content | Paper |
 |---|---|---|
-| 0 | The model and the status of each input (sourced, adapted, assumed) | Section 2, Table 1 |
-| 1 | The estimate for the scenario, built up step by step | Section 3 |
-| 2 | Two firms bid the same project; three levers for the less experienced one | Section 3, Table 2, Fig. 2 |
-| 2b | Project history with relatedness judged and measured; experience stock; bid interval before and after a digital thread; the next-year decision (related, unrelated or no project) with its hidden cost | Section 4, Tables 3–5, Fig. 4; Section 5, Fig. 5 |
-| 3 | A series versus a run of unique projects; Erichsen's series model | Section 2, Fig. 1 |
-| 4 | What a gap between projects costs | Section 6 |
-| 4b | A custom project interrupting a line of repeat projects: visible cost, hidden cost on the projects that follow, how far the next project returns toward first-project cost | Section 3, Fig. 3; Section 6, Table 6 |
-| 5 | More views: curve family, relatedness, heat map, tornado | Section 6, Fig. 7 |
-| 6 | Investment in knowledge tools: learning, reuse and core-productivity channels | Section 5, Eq. (5) |
-| 7–8 | Sources and how far to trust them; hypotheses and what would settle them | Sections 6–7 |
-
-Base case: 122,071 labour hours in Form A for a 100,000-hour core (novelty 10%, change orders 12.3%, learning 6.5% per doubling, six related projects at relatedness 0.6, 14 months since the last); 112,300 in Form B.
+| Estimate | Cost of the project for the scenario of the controls, with the weak case and the steps that lead to the experience available | Sections 2.1–2.9 |
+| Step 2.1 | Erichsen's learning curve | Fig. 1 |
+| Step 2.2 | Floor at the core cost and novelty penalty | Fig. 2 |
+| Step 2.3 | Experience from similar projects | Fig. 3 |
+| Steps 2.4–2.6 | Three losses: time without related work, an unrelated project, people leaving | Fig. 4 |
+| Step 2.7 | Reuse and digital tools | Fig. 5 |
+| Step 2.8 | Customer changes; visible and hidden cost | Fig. 6 |
+| Step 2.9 | Strength of the learning effect | Section 2.9; weak-case marks of Fig. 7 |
+| Section 3 | Firm X: history, experience stock, bid, an unrelated project offered, narrowing the estimate | Figs. 8–11 |
+| Section 5.2 | Levers for a firm with no related experience; the AI assistant as a scenario | Fig. 14 |
+| Table 1 | Factors, shapes, base values and the status of each source | Table 1 |
 
 ## Reproducing the paper's numbers
 
-- Mock-up case (Table 2): default scenario; switch λ between 0 and 100% for the two forms.
-- Custom project in a line (Fig. 3, Table 2 rows): Plate 4b with λ = 100%, six projects, interruption after the fourth, 12 months, retention 75%.
-- Detailed case (Tables 3–5, Fig. 4): Plate 2b, "reset to the paper's detailed case".
-- Change orders falling with experience (Section 6): the checkbox under the change-order slider.
+With the base values, the buttons under "Situations from the paper" give:
+
+- design new to the firm: 123,500 labour hours; a repeat: 103,000;
+- after two and after five similar projects (similarity 0.6): 108,800 and 103,000;
+- after five, then 36 months without related work: 106,500;
+- after five, then a 12-month unrelated project: 121,700 (hidden cost on the following projects 35,300, Step 2.8);
+- after five, then half of the experience leaves: 106,500;
+- new design with an earlier design reused: 113,000; with the tool fully in use: 110,500;
+- Firm X: bid 108,500 at the judged stock (1.23) and 113,400 at the measured stock (0.70).
 
 ## Files
 
@@ -58,7 +67,7 @@ Base case: 122,071 labour hours in Form A for a 100,000-hour core (novelty 10%, 
 
 ## Authors
 
-Gokce Yilmaz and Henrique M. Gaspar, Department of Ocean Operations and Civil Engineering (IHB), NTNU Ålesund. Developed with the assistance of Claude (Anthropic); reviewed and edited by the authors.
+Gokce Yilmaz and Henrique M. Gaspar, Department of Ocean Operations and Civil Engineering (IHB), NTNU Ålesund. Developed with the assistance of Claude (Anthropic).
 
 ## Citing
 
